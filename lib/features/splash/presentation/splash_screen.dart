@@ -1,10 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:your_recipes/common/theme/dimensions.dart';
+import 'package:your_recipes/common/common.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(
+      const Duration(
+        seconds: 3,
+      ),
+      () {
+        context.pushReplacementNamed(RoutesLocation.login);
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

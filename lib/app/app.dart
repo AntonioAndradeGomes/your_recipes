@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:your_recipes/common/common.dart';
-import 'package:your_recipes/features/auth/presentation/login_screen.dart';
+import 'package:your_recipes/common/routes/router_config.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
       splitScreenMode: false,
       minTextAdapt: true,
       builder: (_, __) {
-        return MaterialApp(
+        return MaterialApp.router(
           debugShowCheckedModeBanner: false,
           title: 'Your Recipes',
           theme: AppTheme.ligth.copyWith(
@@ -21,7 +21,9 @@ class MyApp extends StatelessWidget {
               centerTitle: true,
             ),
           ),
-          home: const LoginScreen(),
+          routerDelegate: routes.routerDelegate,
+          routeInformationParser: routes.routeInformationParser,
+          routeInformationProvider: routes.routeInformationProvider,
         );
       },
     );
