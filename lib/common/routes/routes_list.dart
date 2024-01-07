@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:your_recipes/common/routes/routes_location.dart';
-import 'package:your_recipes/features/auth/presentation/login_screen.dart';
-import 'package:your_recipes/features/splash/presentation/splash_screen.dart';
+import 'package:your_recipes/features/auth/presentation/screens/login_screen.dart';
+import 'package:your_recipes/features/splash/presentation/screens/splash_screen.dart';
 
 final routesList = [
   GoRoute(

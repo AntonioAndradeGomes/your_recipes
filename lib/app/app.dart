@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:your_recipes/common/common.dart';
-import 'package:your_recipes/common/routes/router_config.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
