@@ -65,6 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: BlocBuilder<LoginCubit, LoginState>(
                       bloc: _controller,
                       builder: (context, state) {
+                        print(state);
                         if (state is LoadingLoginState) {
                           return const CircularProgressIndicator();
                         }
