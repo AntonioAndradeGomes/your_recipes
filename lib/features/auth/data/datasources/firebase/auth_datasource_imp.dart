@@ -52,4 +52,9 @@ class AuthDatasourceImp implements AuthDatasource {
       }
     }
   }
+
+  @override
+  Stream<User?> getUserChanges() async* {
+    yield* firebaseAuth.authStateChanges();
+  }
 }

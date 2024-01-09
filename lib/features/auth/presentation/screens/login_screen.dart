@@ -2,11 +2,12 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:your_recipes/common/theme/dimensions.dart';
 import 'package:your_recipes/common/utils/extensions.dart';
-import 'package:your_recipes/features/auth/presentation/cubit/login_cubit.dart';
-import 'package:your_recipes/features/auth/presentation/cubit/login_state.dart';
+import 'package:your_recipes/features/auth/presentation/cubit/login/login_cubit.dart';
+import 'package:your_recipes/features/auth/presentation/cubit/login/login_state.dart';
 import 'package:your_recipes/features/auth/presentation/widgets/social_button_widget.dart';
 import 'package:your_recipes/providers.dart';
 import '../widgets/login_text_form_field_password_widget.dart';
@@ -62,10 +63,33 @@ class _LoginScreenState extends State<LoginScreen> {
                     duration: const Duration(
                       milliseconds: 1400,
                     ),
-                    child: BlocBuilder<LoginCubit, LoginState>(
+                    child: BlocConsumer<LoginCubit, LoginState>(
                       bloc: _controller,
+                      listener: (context, state) {
+                        if (state is UnauthenticatedState) {
+                          showDialog(
+                            context: context,
+                            builder: (_) => AlertDialog.adaptive(
+                              actions: [
+                                TextButton(
+                                  onPressed: context.pop,
+                                  child: const Text(
+                                    'Fechar',
+                                  ),
+                                ),
+                              ],
+                              title: const Text(
+                                'Erro!',
+                              ),
+                              contentPadding: Dimensions.paddingAllLarge,
+                              content: Text(
+                                state.message,
+                              ),
+                            ),
+                          );
+                        }
+                      },
                       builder: (context, state) {
-                        print(state);
                         if (state is LoadingLoginState) {
                           return const CircularProgressIndicator();
                         }
@@ -80,11 +104,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                   _controller.singInWithGoogle();
                                 },
                               ),
-                              Dimensions.verticalSpaceMedium,
-                              SocialButtonWidget(
-                                type: SocialMediaType.apple,
-                                onPressed: () {},
-                              ),
+                              /* Column(
+                                children: [
+                                  Dimensions.verticalSpaceMedium,
+                                  SocialButtonWidget(
+                                    type: SocialMediaType.apple,
+                                    onPressed: () {},
+                                  ),
+                                ],
+                              ),*/
                               Dimensions.verticalSpaceMedium,
                               ConstrainedBox(
                                 constraints: const BoxConstraints(

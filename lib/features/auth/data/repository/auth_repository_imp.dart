@@ -39,6 +39,14 @@ class AuthRepositoryImp implements AuthRepository {
           ),
         );
       }
+      if (e.runtimeType == String && e.toString() == 'popup_closed') {
+        return const Failure(
+          CustomException(
+            code: 'popup_closed',
+            message: 'Processo de login abortado',
+          ),
+        );
+      }
       return const Failure(
         CustomException(
           code: 'unknown_error',
@@ -46,5 +54,10 @@ class AuthRepositoryImp implements AuthRepository {
         ),
       );
     }
+  }
+
+  @override
+  Stream<User?> getUserChanges() {
+    return datasource.getUserChanges();
   }
 }
