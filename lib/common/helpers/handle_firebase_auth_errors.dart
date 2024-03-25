@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:your_recipes/common/error/custom_exception.dart';
-
+/*
 CustomException handleAuthError(FirebaseAuthException e) {
   switch (e.code) {
     case 'account-exists-with-different-credential':
@@ -86,3 +86,4 @@ CustomException handleAuthError(FirebaseAuthException e) {
       );
   }
 }
+*/

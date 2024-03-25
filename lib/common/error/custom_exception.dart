@@ -2,15 +2,21 @@ import 'package:equatable/equatable.dart';
 
 class CustomException extends Equatable implements Exception {
   final String? code;
-  final String? messageFirebase;
-  final String? message;
+  //mensagem retornada do erro
+  final String? messageError;
+  //mensagem que eu quero mostar
+  final String? customMessage;
 
   const CustomException({
     this.code,
-    this.messageFirebase,
-    this.message,
+    this.customMessage,
+    this.messageError,
   });
 
   @override
-  List<Object?> get props => [code, message, messageFirebase];
+  List<Object?> get props => [
+        code,
+        customMessage,
+        messageError,
+      ];
 }

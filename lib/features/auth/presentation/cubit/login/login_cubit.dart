@@ -25,7 +25,7 @@ class LoginCubit extends Cubit<LoginState> {
         emit(
           UnauthenticatedState(
             code: failure.code,
-            message: failure.message ?? 'Erro desconhecido',
+            message: failure.customMessage ?? 'Erro desconhecido',
           ),
         );
       },

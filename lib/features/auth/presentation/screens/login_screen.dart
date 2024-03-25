@@ -104,6 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   _controller.singInWithGoogle();
                                 },
                               ),
+
                               /* Column(
                                 children: [
                                   Dimensions.verticalSpaceMedium,

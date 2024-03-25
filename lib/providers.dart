@@ -21,13 +21,7 @@ Future<void> initializeDependencies() async {
   getIt.registerSingleton(
     FirebaseFirestore.instance,
   );
-  getIt.registerSingleton(
-    GoogleSignIn(
-      scopes: [
-        'email',
-      ],
-    ),
-  );
+  getIt.registerSingleton(GoogleSignIn.standard());
   ////////////////////////////////////////////////
 
   //login
