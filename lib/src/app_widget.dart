@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:your_recipes/locator.dart';
 import 'package:your_recipes/src/config/routes/router_config.dart';
 import 'package:your_recipes/src/config/theme/app_theme.dart';
 import 'package:your_recipes/src/viewmodels/user_view_model.dart';
@@ -18,7 +19,9 @@ class AppWidget extends StatelessWidget {
         return MultiProvider(
           providers: [
             ChangeNotifierProvider(
-              create: (_) => UserViewModel(),
+              create: (_) => UserViewModel(
+                locator(),
+              ),
               lazy: false,
             ),
           ],
