@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'package:your_recipes/common/utils/utils.dart';
+import 'package:your_recipes/src/config/extensions.dart';
 
 class LoginTextFormFieldPasswordWidget extends StatefulWidget {
   final AutovalidateMode? autovalidateMode;

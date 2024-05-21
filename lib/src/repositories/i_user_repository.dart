@@ -4,4 +4,6 @@ import 'package:your_recipes/src/models/user_model.dart';
 
 abstract class IUserRepository {
   Future<Result<UserModel, CustomException>> signInWithGoogle();
+  Future<UserModel?> getUserById({required String userId});
+  Stream<UserModel?> getUserChanges();
 }

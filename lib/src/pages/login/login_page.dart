@@ -1,5 +1,4 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -14,20 +13,6 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final usercontroller = context.watch<UserViewModel>();
-    FirebaseFirestore.instance
-        .collection(
-          'users',
-        )
-        .doc('dE4cj2SlTPcz0AydRWfH2hyFeix2')
-        .get()
-        .then((doc) {
-      if (doc.exists) {
-        print(doc.id);
-        print(doc.data() as Map<String, dynamic>);
-        return doc;
-      }
-      return null;
-    });
     return Scaffold(
       body: Center(
         child: Stack(

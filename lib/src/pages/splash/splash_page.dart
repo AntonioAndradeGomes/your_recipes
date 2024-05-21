@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
@@ -19,7 +18,7 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     Timer(
       const Duration(
-        seconds: 3,
+        seconds: 2,
       ),
       () {
         context.pushReplacementNamed(

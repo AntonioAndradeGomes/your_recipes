@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -38,7 +39,7 @@ class UserFirebaseRepopository implements IUserRepository {
         idToken: googleAuth.idToken,
       );
       final result = await _firebaseAuth.signInWithCredential(oAuthCredentials);
-      UserModel? userDoc = await _getUser(
+      UserModel? userDoc = await getUserById(
         userId: result.user!.uid,
       );
       if (userDoc == null) {
@@ -81,11 +82,34 @@ class UserFirebaseRepopository implements IUserRepository {
     }
   }
 
-  Future<UserModel?> _getUser({required String userId}) async {
+  @override
+  Future<UserModel?> getUserById({required String userId}) async {
     final doc = await _usersCollection.doc(userId).get();
     if (doc.exists) {
       return UserModel.fromJson(doc.data() as Map<String, dynamic>);
     }
     return null;
+  }
+
+  @override
+  Stream<UserModel?> getUserChanges() {
+    return _firebaseAuth.authStateChanges().transform(_userTransformer);
+  }
+
+  StreamTransformer<User?, UserModel?> get _userTransformer {
+    return StreamTransformer<User?, UserModel?>.fromHandlers(
+      handleData: (user, sink) async {
+        if (user != null) {
+          // Se o usuário estiver autenticado, buscar o UserModel correspondente no Firestore
+          final userModel = await getUserById(
+            userId: user.uid,
+          );
+          sink.add(userModel);
+        } else {
+          // Se o usuário não estiver autenticado, emitir nulo
+          sink.add(null);
+        }
+      },
+    );
   }
 }

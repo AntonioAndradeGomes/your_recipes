@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:your_recipes/src/pages/login/login_page.dart';
 import 'package:your_recipes/src/pages/splash/splash_page.dart';
+import 'package:your_recipes/src/providers.dart';
 
 abstract class RoutesLocation {
   static String get splash => '/splash';
@@ -46,7 +47,10 @@ final navigationKey = GlobalKey<NavigatorState>();
 final routes = GoRouter(
   initialLocation: RoutesLocation.splash,
   routes: routesList,
+  refreshListenable: userController,
   redirect: (context, state) {
+    final usercontroller = userController.user;
+    print(usercontroller);
     print(state.fullPath);
     return null;
     /*final isSplash = state.fullPath == RoutesLocation.splash;

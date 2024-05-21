@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:equatable/equatable.dart';
 
-class UserModel {
+class UserModel extends Equatable {
   String? id;
   String? name;
   String? email;
@@ -40,4 +41,14 @@ class UserModel {
       'updatedAt': updatedAt != null ? Timestamp.fromDate(updatedAt!) : null,
     };
   }
+
+  @override
+  List<Object?> get props => [
+        id,
+        name,
+        email,
+        photoUrl,
+        createdAt,
+        updatedAt,
+      ];
 }
