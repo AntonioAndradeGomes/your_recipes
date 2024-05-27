@@ -7,12 +7,25 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:297939322581:android:ba8cdba85a97705636c45c",
+        "mobilesdk_app_id": "1:297939322581:android:7e741298a5a9f48b36c45c",
         "android_client_info": {
           "package_name": "com.example.your_recipes"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "297939322581-tq068ngbmoa0jppgmi2p4004ppef7fs2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.your_recipes",
+            "certificate_hash": "1c601545f4b94b704d9add43bf08d9b01399d1c1"
+          }
+        },
+        {
+          "client_id": "297939322581-ibnmdl7p72qs8b4n2pq4ou9ue87h1jgk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCI5csdKTAAsK9MKQQI-CRnF1jeqDzSjsc"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "297939322581-atn6hpk2bcen2lpiqjep2cke6vjok4d2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "297939322581-acgendop73m692mda6nh1ean2s21531u.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.yourRecipes"
+              }
+            }
+          ]
         }
       }
     }
