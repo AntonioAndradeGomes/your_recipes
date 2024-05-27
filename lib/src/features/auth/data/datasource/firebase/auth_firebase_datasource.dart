@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
@@ -45,6 +47,7 @@ class AuthFirebaseDatasource extends AuthDatasource {
       }
       return _createUser(result.user!);
     } catch (e) {
+      log(e.toString());
       rethrow;
     }
   }

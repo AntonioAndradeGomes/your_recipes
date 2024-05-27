@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:your_recipes/src/common/utils/extensions.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -8,20 +10,21 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final _currentIndex = 0;
   @override
   Widget build(BuildContext context) {
+    final colors = context.colorScheme;
     return Scaffold(
       appBar: AppBar(
-        title: const Text(''),
-      ),
-      body: Container(),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.pink,
-        child: SizedBox(
-          height: 50,
+        elevation: 0,
+        title: Text(
+          "Suas Receitas",
+          style: GoogleFonts.anton(
+            color: colors.primary,
+            fontSize: 30,
+          ),
         ),
       ),
+      body: Column(),
     );
   }
 }
