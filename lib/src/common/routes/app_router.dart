@@ -41,7 +41,7 @@ class AppRouter {
         path: RoutesLocation.editRecipe,
         name: RoutesLocation.editRecipe,
         builder: (context, state) {
-          return EditRecipePage();
+          return const EditRecipePage();
         },
       ),
       ShellRoute(
@@ -70,7 +70,7 @@ class AppRouter {
             builder: (context, state) {
               return Scaffold(
                 appBar: AppBar(
-                  title: Text(
+                  title: const Text(
                     'Buscar',
                   ),
                 ),
@@ -84,7 +84,7 @@ class AppRouter {
             builder: (context, state) {
               return Scaffold(
                 appBar: AppBar(
-                  title: Text(
+                  title: const Text(
                     'Favoritos',
                   ),
                 ),
@@ -98,7 +98,7 @@ class AppRouter {
             builder: (context, state) {
               return Scaffold(
                 appBar: AppBar(
-                  title: Text(
+                  title: const Text(
                     'Perfil',
                   ),
                 ),

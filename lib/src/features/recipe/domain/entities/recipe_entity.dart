@@ -5,6 +5,7 @@ class RecipeEntity extends Equatable {
   final String? id;
   final String name;
   final String? description;
+  final List<dynamic>? imagens;
   final List<IngredientEntity>? baseIngredients;
 
   const RecipeEntity({
@@ -12,6 +13,7 @@ class RecipeEntity extends Equatable {
     required this.name,
     this.description,
     this.baseIngredients,
+    this.imagens,
   });
 
   @override
@@ -20,5 +22,6 @@ class RecipeEntity extends Equatable {
         name,
         description,
         baseIngredients,
+        imagens,
       ];
 }
