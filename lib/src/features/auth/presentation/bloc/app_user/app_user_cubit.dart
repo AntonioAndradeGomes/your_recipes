@@ -20,13 +20,15 @@ class AppUserCubit extends Cubit<AppUserState> {
 
   void _init() {
     emit(AppUserLoading());
-    _authSubscription = _authStateChanges.call().listen((event) {
-      if (event == null) {
-        emit(AppUserUnauthenticated());
-      } else {
-        emit(AppUserAuthenticated(event));
-      }
-    });
+    _authSubscription = _authStateChanges.call().listen(
+      (event) {
+        if (event == null) {
+          emit(AppUserUnauthenticated());
+        } else {
+          emit(AppUserAuthenticated(event));
+        }
+      },
+    );
   }
 
   @override

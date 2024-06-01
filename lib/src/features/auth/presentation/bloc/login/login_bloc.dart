@@ -9,8 +9,9 @@ part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final LoginWithGoogle _loginWithGoogleUseCase;
-  LoginBloc({required LoginWithGoogle loginWithGoogleUseCase})
-      : _loginWithGoogleUseCase = loginWithGoogleUseCase,
+  LoginBloc({
+    required LoginWithGoogle loginWithGoogleUseCase,
+  })  : _loginWithGoogleUseCase = loginWithGoogleUseCase,
         super(
           LoginInitial(),
         ) {
