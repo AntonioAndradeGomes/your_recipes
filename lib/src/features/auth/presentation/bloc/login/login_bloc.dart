@@ -14,7 +14,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         super(
           LoginInitial(),
         ) {
-    on<LoginGoogleSignUp>(_onLoginGoogle);
+    on<LoginGoogleSignUp>(
+      _onLoginGoogle,
+    );
   }
 
   Future<void> _onLoginGoogle(
