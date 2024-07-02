@@ -1,14 +1,15 @@
 import 'package:equatable/equatable.dart';
 
+// ignore: must_be_immutable
 class IngredientEntity extends Equatable {
-  final String measurementUnit;
-  final String quantity;
-  final String name;
+  String? measurementUnit;
+  String? quantity;
+  String? name;
 
-  const IngredientEntity({
-    required this.measurementUnit,
-    required this.quantity,
-    required this.name,
+  IngredientEntity({
+    this.measurementUnit,
+    this.quantity,
+    this.name,
   });
 
   @override

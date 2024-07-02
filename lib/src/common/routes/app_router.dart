@@ -2,12 +2,15 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:your_recipes/src/common/routes/routes_location.dart';
+import 'package:your_recipes/src/features/auth/data/models/user_model.dart';
 import 'package:your_recipes/src/features/auth/presentation/bloc/app_user/app_user_cubit.dart';
 import 'package:your_recipes/src/features/auth/presentation/screens/login_screen.dart';
 import 'package:your_recipes/src/features/base/presentation/screens/base_page.dart';
 import 'package:your_recipes/src/features/home/presentation/screens/home_page.dart';
+import 'package:your_recipes/src/features/recipe/domain/entities/recipe_entity.dart';
 import 'package:your_recipes/src/features/recipe/presentation/screens/edit_recipe_page.dart';
 import 'package:your_recipes/src/features/splash/presentation/screens/splash_screen.dart';
+import 'package:your_recipes/src/features/user_profile/presentation/screens/profile_screen.dart';
 
 final navigationKey = GlobalKey<NavigatorState>();
 final shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -41,12 +44,15 @@ class AppRouter {
         path: RoutesLocation.editRecipe,
         name: RoutesLocation.editRecipe,
         builder: (context, state) {
-          return EditRecipePage();
+          final recipe = state.extra as RecipeEntity;
+          return EditRecipePage(
+            recipeEntity: recipe,
+          );
         },
       ),
       ShellRoute(
         navigatorKey: shellNavigatorKey,
-        pageBuilder: (context, state, child) {
+        pageBuilder: (_, state, child) {
           return NoTransitionPage(
             child: BasePage(
               location: state.fullPath,
@@ -70,7 +76,7 @@ class AppRouter {
             builder: (context, state) {
               return Scaffold(
                 appBar: AppBar(
-                  title: Text(
+                  title: const Text(
                     'Buscar',
                   ),
                 ),
@@ -84,7 +90,7 @@ class AppRouter {
             builder: (context, state) {
               return Scaffold(
                 appBar: AppBar(
-                  title: Text(
+                  title: const Text(
                     'Favoritos',
                   ),
                 ),
@@ -96,12 +102,9 @@ class AppRouter {
             name: RoutesLocation.profile,
             parentNavigatorKey: shellNavigatorKey,
             builder: (context, state) {
-              return Scaffold(
-                appBar: AppBar(
-                  title: Text(
-                    'Perfil',
-                  ),
-                ),
+              final userModel = state.extra as UserModel;
+              return ProfileScreen(
+                userModel: userModel,
               );
             },
           ),
@@ -128,6 +131,7 @@ class AppRouter {
       if (isLoginPage && authenticatedUser) {
         return RoutesLocation.base;
       }
+
       return null;
     },
     refreshListenable: GoRouterRefreshStream(

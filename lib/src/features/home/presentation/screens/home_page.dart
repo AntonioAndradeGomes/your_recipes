@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      body: Column(),
+      body: const Column(),
     );
   }
 }

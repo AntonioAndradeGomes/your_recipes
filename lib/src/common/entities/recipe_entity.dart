@@ -1,17 +1,22 @@
 import 'package:equatable/equatable.dart';
-import 'package:your_recipes/src/features/recipe/domain/entities/ingredient_entity.dart';
+import 'package:your_recipes/src/common/entities/ingredient_entity.dart';
+import 'package:your_recipes/src/common/entities/step_recipe_entity.dart';
 
 class RecipeEntity extends Equatable {
   final String? id;
-  final String name;
+  final String? name;
   final String? description;
+  final List<dynamic>? imagens;
   final List<IngredientEntity>? baseIngredients;
+  final List<StepRecipeEntity>? baseSteps;
 
   const RecipeEntity({
+    this.baseSteps,
     this.id,
-    required this.name,
+    this.name,
     this.description,
     this.baseIngredients,
+    this.imagens,
   });
 
   @override
@@ -20,5 +25,7 @@ class RecipeEntity extends Equatable {
         name,
         description,
         baseIngredients,
+        imagens,
+        baseSteps,
       ];
 }
