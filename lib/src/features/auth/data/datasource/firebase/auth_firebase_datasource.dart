@@ -68,14 +68,20 @@ class AuthFirebaseDatasource extends AuthDatasource {
 
   @override
   Stream<UserModel?> authStateChanges() {
-    return _firebaseAuth.authStateChanges().asyncMap((user) async {
-      if (user == null) {
-        return null;
-      }
-      final doc = await _usersCollection.doc(user.uid).get();
-      final json = doc.data() as Map<String, dynamic>;
-      json.addAll({'id': doc.id});
-      return UserModel.fromJson(json);
-    });
+    return _firebaseAuth.authStateChanges().asyncExpand(
+      (user) {
+        if (user == null) {
+          return Stream.value(null);
+        }
+        return _usersCollection.doc(user.uid).snapshots().map((doc) {
+          if (doc.exists) {
+            final json = doc.data() as Map<String, dynamic>;
+            json.addAll({'id': doc.id});
+            return UserModel.fromJson(json);
+          }
+          return null;
+        });
+      },
+    );
   }
 }

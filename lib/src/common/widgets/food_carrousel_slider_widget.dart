@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 
 class FoodCarrouselSliderWidget extends StatelessWidget {
   final List<Widget> items;
-  const FoodCarrouselSliderWidget({super.key, required this.items});
+  const FoodCarrouselSliderWidget({
+    super.key,
+    required this.items,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:your_recipes/src/features/recipe/domain/entities/step_recipe_entity.dart';
+import 'package:your_recipes/src/common/entities/step_recipe_entity.dart';
 
 class StepRecipeSectionEntity extends Equatable {
   final int pos;
