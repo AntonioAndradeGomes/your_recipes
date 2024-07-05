@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:your_recipes/src/common/entities/ingredient_entity.dart';
+import 'package:your_recipes/src/common/utils/extensions.dart';
+import 'package:your_recipes/src/common/widgets/custom_icon_button.dart';
 
 class EditItemIngredientWidget extends StatelessWidget {
   final IngredientEntity ingredientEntity;
@@ -12,10 +14,13 @@ class EditItemIngredientWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colorScheme;
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
           child: TextFormField(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             initialValue: ingredientEntity.name,
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -25,52 +30,20 @@ class EditItemIngredientWidget extends StatelessWidget {
             },
             onChanged: (value) => ingredientEntity.name = value,
             decoration: const InputDecoration(
-              labelText: 'Quantidade',
+              hintText: '200g de muçarela',
               isDense: true,
-              contentPadding: EdgeInsets.symmetric(
-                vertical: 2,
-              ),
             ),
           ),
         ),
-        Expanded(
-          child: TextFormField(
-            initialValue: ingredientEntity.name,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Inválido';
-              }
-              return null;
-            },
-            onChanged: (value) => ingredientEntity.name = value,
-            decoration: const InputDecoration(
-              labelText: 'Unidade',
-              isDense: true,
-              contentPadding: EdgeInsets.symmetric(
-                vertical: 2,
-              ),
-            ),
-          ),
+        CustomIconButton(
+          onTap: onRemove,
+          icon: Icons.delete,
+          color: colors.primary,
         ),
-        Expanded(
-          child: TextFormField(
-            initialValue: ingredientEntity.name,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Inválido';
-              }
-              return null;
-            },
-            onChanged: (value) => ingredientEntity.name = value,
-            decoration: const InputDecoration(
-              labelText: 'Nome',
-              isDense: true,
-              contentPadding: EdgeInsets.symmetric(
-                vertical: 2,
-              ),
-            ),
-          ),
-        )
+        CustomIconButton(
+          icon: Icons.menu,
+          color: colors.primary,
+        ),
       ],
     );
   }
