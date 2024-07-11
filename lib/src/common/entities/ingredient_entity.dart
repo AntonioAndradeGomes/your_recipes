@@ -1,18 +1,7 @@
-import 'package:equatable/equatable.dart';
-
-// ignore: must_be_immutable
-class IngredientEntity extends Equatable {
-  int? pos;
+class IngredientEntity {
   String? name;
 
   IngredientEntity({
-    this.pos,
     this.name,
   });
-
-  @override
-  List<Object?> get props => [
-        pos,
-        name,
-      ];
 }

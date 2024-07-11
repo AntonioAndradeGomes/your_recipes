@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:your_recipes/src/common/entities/ingredient_entity.dart';
+import 'package:your_recipes/src/common/entities/step_recipe_entity.dart';
 import 'package:your_recipes/src/common/utils/extensions.dart';
 import 'package:your_recipes/src/common/widgets/custom_icon_button.dart';
 
-class EditItemIngredientWidget extends StatelessWidget {
-  final IngredientEntity ingredientEntity;
+class EditItemStepWidget extends StatelessWidget {
+  final StepRecipeEntity stepEntity;
   final VoidCallback? onRemove;
   final VoidCallback? onMoveUp;
   final VoidCallback? onMoveDown;
-  final String? hintTextExample;
-  const EditItemIngredientWidget({
+  const EditItemStepWidget({
     super.key,
-    required this.ingredientEntity,
+    required this.stepEntity,
     this.onRemove,
     this.onMoveUp,
     this.onMoveDown,
-    this.hintTextExample,
   });
 
   @override
@@ -31,7 +29,7 @@ class EditItemIngredientWidget extends StatelessWidget {
           Expanded(
             child: TextFormField(
               autovalidateMode: AutovalidateMode.onUserInteraction,
-              initialValue: ingredientEntity.name,
+              initialValue: stepEntity.description,
               maxLines: null,
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -39,10 +37,9 @@ class EditItemIngredientWidget extends StatelessWidget {
                 }
                 return null;
               },
-              onChanged: (value) => ingredientEntity.name = value,
+              onChanged: (value) => stepEntity.description = value,
               decoration: InputDecoration(
-                hintText:
-                    hintTextExample ?? '3 xícaras e 3/4 de farinha de trigo',
+                hintText: '',
                 isDense: true,
               ),
             ),

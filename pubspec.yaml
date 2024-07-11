@@ -52,6 +52,7 @@ dependencies:
   image_cropper: ^7.0.5
   another_carousel_pro: ^1.0.2
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

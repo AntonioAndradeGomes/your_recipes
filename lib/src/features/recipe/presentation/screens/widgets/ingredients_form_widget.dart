@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:your_recipes/src/common/helpers/ingredient_helper.dart';
 import 'package:your_recipes/src/common/utils/extensions.dart';
 import 'package:your_recipes/src/common/widgets/custom_icon_button.dart';
 import 'package:your_recipes/src/common/entities/ingredient_entity.dart';
@@ -7,6 +8,7 @@ import 'package:your_recipes/src/features/recipe/presentation/screens/widgets/ed
 
 class IngredientsFormWidget extends StatelessWidget {
   final List<IngredientEntity>? listIngredients;
+
   const IngredientsFormWidget({
     super.key,
     required this.listIngredients,
@@ -16,15 +18,10 @@ class IngredientsFormWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
     return FormField<List<IngredientEntity>>(
-      // autovalidateMode: AutovalidateMode.always,
       initialValue: listIngredients ??
           [
-            IngredientEntity(
-              pos: 0,
-            ),
-            IngredientEntity(
-              pos: 1,
-            ),
+            IngredientEntity(),
+            IngredientEntity(),
           ],
       validator: (items) {
         if (items == null || items.isEmpty) {
@@ -34,6 +31,7 @@ class IngredientsFormWidget extends StatelessWidget {
       },
       builder: (state) {
         return Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Row(
               children: [
@@ -50,27 +48,69 @@ class IngredientsFormWidget extends StatelessWidget {
                   color: Theme.of(context).primaryColor,
                   onTap: () {
                     state.value?.add(
-                      IngredientEntity(
-                        pos: state.value?.length,
-                      ),
+                      IngredientEntity(),
                     );
                     state.didChange(state.value);
                   },
                 ),
               ],
             ),
-            Column(
-              children: state.value!.map<Widget>((item) {
-                return EditItemIngredientWidget(
-                  key: ObjectKey(item),
-                  ingredientEntity: item,
-                  onRemove: () {
-                    state.value?.remove(item);
+            if (state.value != null)
+              Column(
+                children: state.value!.map<Widget>(
+                  (item) {
+                    return EditItemIngredientWidget(
+                      key: ObjectKey(item),
+                      ingredientEntity: item,
+                      onRemove: () {
+                        state.value?.remove(item);
+                        state.didChange(state.value);
+                      },
+                      hintTextExample: IngredientHelper.getRandomIngredient(),
+                      onMoveUp: item != state.value!.first
+                          ? () {
+                              final index = state.value!.indexOf(item);
+                              state.value?.remove(item);
+                              state.value?.insert(index - 1, item);
+                              state.didChange(state.value);
+                            }
+                          : null,
+                      onMoveDown: item != state.value!.last
+                          ? () {
+                              final index = state.value!.indexOf(item);
+                              state.value?.remove(item);
+                              state.value?.insert(index + 1, item);
+                              state.didChange(state.value);
+                            }
+                          : null,
+                    );
+                  },
+                ).toList(),
+              ),
+            /*Expanded(
+                child: ReorderableListView.builder(
+                  itemCount: state.value!.length,
+                  shrinkWrap: false,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    final item = state.value![index];
+                    return EditItemIngredientWidget(
+                      key: ObjectKey(item),
+                      ingredientEntity: item,
+                      onRemove: () {
+                        state.value?.remove(item);
+                        state.didChange(state.value);
+                      },
+                    );
+                  },
+                  onReorder: (oldIndex, newIndex) {
+                    if (newIndex > oldIndex) newIndex -= 1;
+                    final item = state.value!.removeAt(oldIndex);
+                    state.value!.insert(newIndex, item);
                     state.didChange(state.value);
                   },
-                );
-              }).toList(),
-            ),
+                ),
+              ),*/
             if (state.hasError)
               Container(
                 margin: const EdgeInsets.only(
