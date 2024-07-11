@@ -8,12 +8,14 @@ class EditItemStepWidget extends StatelessWidget {
   final VoidCallback? onRemove;
   final VoidCallback? onMoveUp;
   final VoidCallback? onMoveDown;
+  final int pos;
   const EditItemStepWidget({
     super.key,
     required this.stepEntity,
     this.onRemove,
     this.onMoveUp,
     this.onMoveDown,
+    required this.pos,
   });
 
   @override
@@ -26,6 +28,22 @@ class EditItemStepWidget extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          Container(
+            decoration: BoxDecoration(
+              color: colors.primary,
+              shape: BoxShape.circle,
+            ),
+            padding: const EdgeInsets.all(8),
+            child: Text(
+              pos.toString(),
+              style: const TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ),
+          const SizedBox(
+            width: 5,
+          ),
           Expanded(
             child: TextFormField(
               autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -39,7 +57,7 @@ class EditItemStepWidget extends StatelessWidget {
               },
               onChanged: (value) => stepEntity.description = value,
               decoration: InputDecoration(
-                hintText: '',
+                hintText: stepEntity.descriptionExemple,
                 isDense: true,
               ),
             ),

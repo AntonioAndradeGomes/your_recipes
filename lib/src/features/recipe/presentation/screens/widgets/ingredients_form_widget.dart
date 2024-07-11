@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:your_recipes/src/common/helpers/ingredient_helper.dart';
 import 'package:your_recipes/src/common/utils/extensions.dart';
 import 'package:your_recipes/src/common/widgets/custom_icon_button.dart';
 import 'package:your_recipes/src/common/entities/ingredient_entity.dart';
@@ -38,7 +37,7 @@ class IngredientsFormWidget extends StatelessWidget {
                 Expanded(
                   child: Text(
                     'Ingredientes',
-                    style: textTheme.titleLarge!.copyWith(
+                    style: textTheme.titleMedium!.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -66,7 +65,6 @@ class IngredientsFormWidget extends StatelessWidget {
                         state.value?.remove(item);
                         state.didChange(state.value);
                       },
-                      hintTextExample: IngredientHelper.getRandomIngredient(),
                       onMoveUp: item != state.value!.first
                           ? () {
                               final index = state.value!.indexOf(item);

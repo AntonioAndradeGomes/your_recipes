@@ -8,14 +8,13 @@ class EditItemIngredientWidget extends StatelessWidget {
   final VoidCallback? onRemove;
   final VoidCallback? onMoveUp;
   final VoidCallback? onMoveDown;
-  final String? hintTextExample;
+
   const EditItemIngredientWidget({
     super.key,
     required this.ingredientEntity,
     this.onRemove,
     this.onMoveUp,
     this.onMoveDown,
-    this.hintTextExample,
   });
 
   @override
@@ -41,8 +40,7 @@ class EditItemIngredientWidget extends StatelessWidget {
               },
               onChanged: (value) => ingredientEntity.name = value,
               decoration: InputDecoration(
-                hintText:
-                    hintTextExample ?? '3 xícaras e 3/4 de farinha de trigo',
+                hintText: ingredientEntity.labelExemple,
                 isDense: true,
               ),
             ),

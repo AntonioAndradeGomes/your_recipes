@@ -35,7 +35,7 @@ class StepsFormWidget extends StatelessWidget {
                 Expanded(
                   child: Text(
                     'Passo a passo',
-                    style: textTheme.titleLarge!.copyWith(
+                    style: textTheme.titleMedium!.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -59,6 +59,7 @@ class StepsFormWidget extends StatelessWidget {
                     return EditItemStepWidget(
                       key: ObjectKey(step),
                       stepEntity: step,
+                      pos: state.value!.indexOf(step) + 1,
                       onRemove: () {
                         state.value?.remove(step);
                         state.didChange(state.value);

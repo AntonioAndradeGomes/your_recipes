@@ -50,13 +50,14 @@ class _EditRecipePageState extends State<EditRecipePage> {
                         color: colors.primaryContainer,
                         fontWeight: FontWeight.w800,
                       ),
+                      maxLines: null,
                       onSaved: (value) {},
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Campo obrigatório";
                         }
                         if (value.length < 6) {
-                          return "Título muito curto";
+                          return "Nome muito curto";
                         }
                         return null;
                       },
@@ -75,6 +76,53 @@ class _EditRecipePageState extends State<EditRecipePage> {
                       maxLines: null,
                       onSaved: (value) {},
                     ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'Tempo de preparo',
+                            style: textTheme.titleMedium!.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: TextFormField(
+                            initialValue: widget.recipeEntity.description,
+                            decoration: const InputDecoration(
+                              hintText: '02 horas e 10 minutos',
+                              //border: InputBorder.none,
+                            ),
+                            style: textTheme.titleMedium,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'Porções',
+                            style: textTheme.titleMedium!.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: TextFormField(
+                            initialValue: widget.recipeEntity.description,
+                            decoration: const InputDecoration(
+                              hintText: '10 pessoas',
+                              //border: InputBorder.none,
+                            ),
+                            style: textTheme.titleMedium,
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -89,6 +137,9 @@ class _EditRecipePageState extends State<EditRecipePage> {
                 child: StepsFormWidget(
                   listSteps: widget.recipeEntity.baseSteps,
                 ),
+              ),
+              const SizedBox(
+                height: 50,
               ),
             ],
           ),
