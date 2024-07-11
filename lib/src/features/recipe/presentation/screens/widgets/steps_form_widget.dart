@@ -6,9 +6,11 @@ import 'package:your_recipes/src/features/recipe/presentation/screens/widgets/ed
 
 class StepsFormWidget extends StatelessWidget {
   final List<StepRecipeEntity>? listSteps;
+  final ScrollController pageListScrollController;
   const StepsFormWidget({
     super.key,
     this.listSteps,
+    required this.pageListScrollController,
   });
 
   @override
@@ -44,10 +46,16 @@ class StepsFormWidget extends StatelessWidget {
                   icon: Icons.add_rounded,
                   color: Theme.of(context).primaryColor,
                   onTap: () {
+                    FocusScope.of(context).unfocus();
                     state.value?.add(
                       StepRecipeEntity(),
                     );
                     state.didChange(state.value);
+                    pageListScrollController.animateTo(
+                      pageListScrollController.offset + 50,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    );
                   },
                 ),
               ],
@@ -61,6 +69,7 @@ class StepsFormWidget extends StatelessWidget {
                       stepEntity: step,
                       pos: state.value!.indexOf(step) + 1,
                       onRemove: () {
+                        FocusScope.of(context).unfocus();
                         state.value?.remove(step);
                         state.didChange(state.value);
                       },

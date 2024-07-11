@@ -7,10 +7,12 @@ import 'package:your_recipes/src/features/recipe/presentation/screens/widgets/ed
 
 class IngredientsFormWidget extends StatelessWidget {
   final List<IngredientEntity>? listIngredients;
+  final ScrollController pageListScrollController;
 
   const IngredientsFormWidget({
     super.key,
     required this.listIngredients,
+    required this.pageListScrollController,
   });
 
   @override
@@ -46,10 +48,16 @@ class IngredientsFormWidget extends StatelessWidget {
                   icon: Icons.add_rounded,
                   color: Theme.of(context).primaryColor,
                   onTap: () {
+                    FocusScope.of(context).unfocus();
                     state.value?.add(
                       IngredientEntity(),
                     );
                     state.didChange(state.value);
+                    pageListScrollController.animateTo(
+                      pageListScrollController.offset + 50,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    );
                   },
                 ),
               ],
@@ -62,6 +70,7 @@ class IngredientsFormWidget extends StatelessWidget {
                       key: ObjectKey(item),
                       ingredientEntity: item,
                       onRemove: () {
+                        FocusScope.of(context).unfocus();
                         state.value?.remove(item);
                         state.didChange(state.value);
                       },

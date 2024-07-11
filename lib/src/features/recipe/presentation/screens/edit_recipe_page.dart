@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:your_recipes/src/common/utils/extensions.dart';
 import 'package:your_recipes/src/common/entities/recipe_entity.dart';
 import 'package:your_recipes/src/features/recipe/presentation/screens/widgets/images_form_widget.dart';
@@ -6,10 +7,10 @@ import 'package:your_recipes/src/features/recipe/presentation/screens/widgets/in
 import 'package:your_recipes/src/features/recipe/presentation/screens/widgets/steps_form_widget.dart';
 
 class EditRecipePage extends StatefulWidget {
-  final RecipeEntity recipeEntity;
+  final RecipeEntity? recipeEntity;
   const EditRecipePage({
     super.key,
-    required this.recipeEntity,
+    this.recipeEntity,
   });
 
   @override
@@ -17,6 +18,20 @@ class EditRecipePage extends StatefulWidget {
 }
 
 class _EditRecipePageState extends State<EditRecipePage> {
+  late ScrollController scrollController;
+
+  @override
+  void initState() {
+    scrollController = ScrollController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = context.colorScheme;
@@ -28,8 +43,17 @@ class _EditRecipePageState extends State<EditRecipePage> {
           title: const Text(
             'Criar Receita',
           ),
+          actions: [
+            TextButton(
+              onPressed: () {},
+              child: const Text(
+                'Salvar',
+              ),
+            ),
+          ],
         ),
         body: SingleChildScrollView(
+          controller: scrollController,
           child: Column(
             children: [
               ImagesFormWidget(
@@ -41,7 +65,7 @@ class _EditRecipePageState extends State<EditRecipePage> {
                   children: [
                     TextFormField(
                       autovalidateMode: AutovalidateMode.onUserInteraction,
-                      initialValue: widget.recipeEntity.name,
+                      initialValue: widget.recipeEntity?.name,
                       decoration: const InputDecoration(
                         hintText: 'Nome da receita',
                         // border: InputBorder.none,
@@ -66,7 +90,7 @@ class _EditRecipePageState extends State<EditRecipePage> {
                       height: 10,
                     ),
                     TextFormField(
-                      initialValue: widget.recipeEntity.description,
+                      initialValue: widget.recipeEntity?.description,
                       decoration: const InputDecoration(
                         hintText:
                             'Descrição: o que faz essa receita ser especial',
@@ -91,11 +115,37 @@ class _EditRecipePageState extends State<EditRecipePage> {
                         ),
                         Expanded(
                           child: TextFormField(
-                            initialValue: widget.recipeEntity.description,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
                             decoration: const InputDecoration(
-                              hintText: '02 horas e 10 minutos',
-                              //border: InputBorder.none,
+                              hintText: '02:10',
                             ),
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              MaskTextInputFormatter(
+                                mask: '##:##',
+                                filter: {
+                                  "#": RegExp(
+                                    r'[0-9]',
+                                  ),
+                                },
+                                type: MaskAutoCompletionType.lazy,
+                              ),
+                            ],
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Campo obrigatório';
+                              }
+                              if (!RegExp(r'^\d{2}:\d{2}$').hasMatch(value)) {
+                                return 'Formato inválido. Use dois dígitos para horas e minutos';
+                              }
+                              final parts = value.split(':');
+                              final minutes = int.parse(parts[1]);
+                              if (minutes >= 60) {
+                                return 'Minutos inválidos';
+                              }
+                              return null;
+                            },
                             style: textTheme.titleMedium,
                           ),
                         ),
@@ -113,12 +163,16 @@ class _EditRecipePageState extends State<EditRecipePage> {
                         ),
                         Expanded(
                           child: TextFormField(
-                            initialValue: widget.recipeEntity.description,
                             decoration: const InputDecoration(
                               hintText: '10 pessoas',
-                              //border: InputBorder.none,
                             ),
                             style: textTheme.titleMedium,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Campo obrigatório';
+                              }
+                              return null;
+                            },
                           ),
                         ),
                       ],
@@ -129,13 +183,15 @@ class _EditRecipePageState extends State<EditRecipePage> {
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: IngredientsFormWidget(
-                  listIngredients: widget.recipeEntity.baseIngredients,
+                  listIngredients: widget.recipeEntity?.baseIngredients,
+                  pageListScrollController: scrollController,
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: StepsFormWidget(
-                  listSteps: widget.recipeEntity.baseSteps,
+                  listSteps: widget.recipeEntity?.baseSteps,
+                  pageListScrollController: scrollController,
                 ),
               ),
               const SizedBox(
