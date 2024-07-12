@@ -20,11 +20,7 @@ class IngredientsFormWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
     return FormField<List<dynamic>>(
-      initialValue: listIngredients ??
-          [
-            IngredientEntity(),
-            IngredientEntity(),
-          ],
+      initialValue: listIngredients,
       validator: (items) {
         if (items == null || items.isEmpty) {
           return "A receita deve ter ao menos 1 ingrediente";

@@ -7,10 +7,10 @@ import 'package:your_recipes/src/features/recipe/presentation/screens/widgets/in
 import 'package:your_recipes/src/features/recipe/presentation/screens/widgets/steps_form_widget.dart';
 
 class EditRecipePage extends StatefulWidget {
-  final RecipeEntity? recipeEntity;
+  final RecipeEntity recipeEntity;
   const EditRecipePage({
     super.key,
-    this.recipeEntity,
+    required this.recipeEntity,
   });
 
   @override
@@ -47,7 +47,10 @@ class _EditRecipePageState extends State<EditRecipePage> {
           actions: [
             TextButton(
               onPressed: () {
-                if (_formKey.currentState!.validate()) {}
+                if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+                  print(widget.recipeEntity);
+                }
               },
               child: const Text(
                 'Salvar',
@@ -70,7 +73,7 @@ class _EditRecipePageState extends State<EditRecipePage> {
                     children: [
                       TextFormField(
                         autovalidateMode: AutovalidateMode.onUserInteraction,
-                        initialValue: widget.recipeEntity?.name,
+                        initialValue: widget.recipeEntity.name,
                         decoration: const InputDecoration(
                           hintText: 'Nome da receita',
                           // border: InputBorder.none,
@@ -80,7 +83,7 @@ class _EditRecipePageState extends State<EditRecipePage> {
                           fontWeight: FontWeight.w800,
                         ),
                         maxLines: null,
-                        onSaved: (value) {},
+                        onSaved: (value) => widget.recipeEntity.name = value,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Campo obrigatório";
@@ -95,7 +98,7 @@ class _EditRecipePageState extends State<EditRecipePage> {
                         height: 10,
                       ),
                       TextFormField(
-                        initialValue: widget.recipeEntity?.description,
+                        initialValue: widget.recipeEntity.description,
                         decoration: const InputDecoration(
                           hintText:
                               'Descrição: o que faz essa receita ser especial',
@@ -103,7 +106,8 @@ class _EditRecipePageState extends State<EditRecipePage> {
                         ),
                         style: textTheme.titleMedium,
                         maxLines: null,
-                        onSaved: (value) {},
+                        onSaved: (value) =>
+                            widget.recipeEntity.description = value,
                       ),
                       const SizedBox(
                         height: 10,
@@ -120,13 +124,14 @@ class _EditRecipePageState extends State<EditRecipePage> {
                           ),
                           Expanded(
                             child: TextFormField(
-                              initialValue:
-                                  widget.recipeEntity!.preparationTime,
+                              initialValue: widget.recipeEntity.preparationTime,
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
                               decoration: const InputDecoration(
                                 hintText: '02:10',
                               ),
+                              onSaved: (value) =>
+                                  widget.recipeEntity.preparationTime = value,
                               keyboardType: TextInputType.number,
                               inputFormatters: [
                                 MaskTextInputFormatter(
@@ -170,16 +175,25 @@ class _EditRecipePageState extends State<EditRecipePage> {
                           ),
                           Expanded(
                             child: TextFormField(
-                              initialValue: widget.recipeEntity!.portions,
+                              initialValue: widget.recipeEntity.portions,
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
                               decoration: const InputDecoration(
                                 hintText: '10 pessoas',
                               ),
+                              onSaved: (value) =>
+                                  widget.recipeEntity.portions = value,
                               style: textTheme.titleMedium,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Campo obrigatório';
+                                }
+                                final parts = value.split(' ');
+                                if (parts.length < 2) {
+                                  return 'Formato incorreto';
+                                }
+                                if (int.tryParse(parts.first) == null) {
+                                  return 'Coloque a quantidade';
                                 }
                                 return null;
                               },
@@ -193,14 +207,14 @@ class _EditRecipePageState extends State<EditRecipePage> {
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: IngredientsFormWidget(
-                    listIngredients: widget.recipeEntity?.baseIngredients,
+                    listIngredients: widget.recipeEntity.baseIngredients,
                     pageListScrollController: scrollController,
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: StepsFormWidget(
-                    listSteps: widget.recipeEntity?.baseSteps,
+                    listSteps: widget.recipeEntity.baseSteps,
                     pageListScrollController: scrollController,
                   ),
                 ),

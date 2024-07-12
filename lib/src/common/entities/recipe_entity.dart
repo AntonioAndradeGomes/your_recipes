@@ -8,6 +8,7 @@ class RecipeEntity extends Equatable {
   String? name;
   String? description;
   List<dynamic>? imagens;
+  List<dynamic>? newImages;
   List<dynamic>? baseIngredients;
   List<StepRecipeEntity>? baseSteps;
   String? portions;
@@ -21,6 +22,7 @@ class RecipeEntity extends Equatable {
     this.baseIngredients,
     this.imagens,
     this.portions,
+    this.newImages,
   });
 
   RecipeEntity.empty()
@@ -37,17 +39,19 @@ class RecipeEntity extends Equatable {
           StepRecipeEntity(),
         ],
         portions = null,
+        newImages = [],
         preparationTime = null;
 
   @override
   List<Object?> get props => [
         id,
+        imagens,
+        newImages,
         name,
         description,
-        baseIngredients,
-        imagens,
-        baseSteps,
-        portions,
         preparationTime,
+        portions,
+        baseIngredients,
+        baseSteps,
       ];
 }

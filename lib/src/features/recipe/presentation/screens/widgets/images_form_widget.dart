@@ -10,7 +10,7 @@ import 'package:your_recipes/src/common/entities/recipe_entity.dart';
 import 'package:your_recipes/src/features/recipe/presentation/screens/widgets/show_image_carrousel_widget.dart';
 
 class ImagesFormWidget extends StatelessWidget {
-  final RecipeEntity? recipeEntity;
+  final RecipeEntity recipeEntity;
   const ImagesFormWidget({
     super.key,
     required this.recipeEntity,
@@ -19,7 +19,7 @@ class ImagesFormWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FormField<List<dynamic>>(
-      initialValue: List.from(recipeEntity?.imagens ?? []),
+      initialValue: List.from(recipeEntity.imagens ?? []),
       validator: (imagens) {
         if (imagens == null || imagens.isEmpty) {
           return 'Insira ao menos uma imagem';
@@ -27,7 +27,7 @@ class ImagesFormWidget extends StatelessWidget {
         return null;
       },
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      onSaved: (list) {},
+      onSaved: (list) => recipeEntity.newImages = list,
       builder: (state) {
         void onImageAdd(File? file) {
           if (file != null) {

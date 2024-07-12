@@ -19,11 +19,7 @@ class StepsFormWidget extends StatelessWidget {
 
     return FormField<List<StepRecipeEntity>>(
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      initialValue: listSteps ??
-          [
-            StepRecipeEntity(),
-            StepRecipeEntity(),
-          ],
+      initialValue: listSteps,
       validator: (items) {
         if (items == null || items.isEmpty) {
           return 'A receita deve ter ao menos 1 passo';
