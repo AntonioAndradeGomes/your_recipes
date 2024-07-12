@@ -26,6 +26,7 @@ class ImagesFormWidget extends StatelessWidget {
         }
         return null;
       },
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       onSaved: (list) {},
       builder: (state) {
         void onImageAdd(File? file) {

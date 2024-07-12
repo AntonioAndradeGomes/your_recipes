@@ -16,7 +16,9 @@ class StepsFormWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = context.textTheme;
+
     return FormField<List<StepRecipeEntity>>(
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       initialValue: listSteps ??
           [
             StepRecipeEntity(),

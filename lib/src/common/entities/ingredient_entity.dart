@@ -1,6 +1,8 @@
+import 'package:equatable/equatable.dart';
 import 'package:your_recipes/src/common/helpers/ingredient_helper.dart';
 
-class IngredientEntity {
+// ignore: must_be_immutable
+class IngredientEntity extends Equatable {
   String? name;
   String? labelExemple;
 
@@ -9,4 +11,7 @@ class IngredientEntity {
   }) {
     labelExemple = IngredientHelper.getRandomIngredient();
   }
+
+  @override
+  List<Object?> get props => [name, labelExemple];
 }

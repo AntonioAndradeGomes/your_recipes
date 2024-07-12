@@ -1,20 +1,18 @@
 import 'package:equatable/equatable.dart';
 import 'package:your_recipes/src/common/entities/ingredient_entity.dart';
 
+// ignore: must_be_immutable
 class IngredientSectionEntity extends Equatable {
-  final int pos;
-  final String name;
-  final List<IngredientEntity> ingredients;
+  String? name;
+  List<IngredientEntity>? ingredients;
 
-  const IngredientSectionEntity({
-    required this.pos,
-    required this.name,
-    required this.ingredients,
+  IngredientSectionEntity({
+    this.name,
+    this.ingredients,
   });
 
   @override
   List<Object?> get props => [
-        pos,
         name,
         ingredients,
       ];
