@@ -3,8 +3,8 @@ import 'package:your_recipes/src/common/entities/ingredient_section_entity.dart'
 import 'package:your_recipes/src/common/utils/extensions.dart';
 import 'package:your_recipes/src/common/entities/ingredient_entity.dart';
 
-import 'package:your_recipes/src/features/recipe/presentation/screens/widgets/edit_item_ingredient_widget.dart';
-import 'package:your_recipes/src/features/recipe/presentation/screens/widgets/section_ingredients_form_widget.dart';
+import 'package:your_recipes/src/features/recipe/presentation/screens/add_recipe/widgets/edit_item_ingredient_widget.dart';
+import 'package:your_recipes/src/features/recipe/presentation/screens/add_recipe/widgets/section_ingredients_form_widget.dart';
 
 class IngredientsFormWidget extends StatelessWidget {
   final List<dynamic>? listIngredients;

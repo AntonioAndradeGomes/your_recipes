@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:your_recipes/src/common/utils/extensions.dart';
 import 'package:your_recipes/src/common/entities/recipe_entity.dart';
-import 'package:your_recipes/src/features/recipe/presentation/screens/widgets/images_form_widget.dart';
-import 'package:your_recipes/src/features/recipe/presentation/screens/widgets/ingredients_form_widget.dart';
-import 'package:your_recipes/src/features/recipe/presentation/screens/widgets/steps_form_widget.dart';
+import 'package:your_recipes/src/features/recipe/presentation/screens/add_recipe/widgets/images_form_widget.dart';
+import 'package:your_recipes/src/features/recipe/presentation/screens/add_recipe/widgets/ingredients_form_widget.dart';
+import 'package:your_recipes/src/features/recipe/presentation/screens/add_recipe/widgets/steps_form_widget.dart';
 
 class EditRecipePage extends StatefulWidget {
   final RecipeEntity recipeEntity;
@@ -49,7 +49,6 @@ class _EditRecipePageState extends State<EditRecipePage> {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-                  print(widget.recipeEntity);
                 }
               },
               child: const Text(
