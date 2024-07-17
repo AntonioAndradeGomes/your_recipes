@@ -5,9 +5,10 @@ import 'package:your_recipes/src/common/entities/step_recipe_entity.dart';
 // ignore: must_be_immutable
 class RecipeEntity extends Equatable {
   String? id;
+  String? userId;
   String? name;
   String? description;
-  List<dynamic>? imagens;
+  List<String>? images;
   List<dynamic>? newImages;
   List<dynamic>? baseIngredients;
   List<StepRecipeEntity>? baseSteps;
@@ -15,21 +16,24 @@ class RecipeEntity extends Equatable {
   String? preparationTime;
 
   RecipeEntity({
-    this.baseSteps,
     this.id,
+    this.userId,
     this.name,
     this.description,
-    this.baseIngredients,
-    this.imagens,
-    this.portions,
+    this.images,
     this.newImages,
+    this.baseIngredients,
+    this.baseSteps,
+    this.portions,
+    this.preparationTime,
   });
 
   RecipeEntity.empty()
       : id = null,
+        userId = null,
         name = null,
         description = null,
-        imagens = [],
+        images = [],
         baseIngredients = [
           IngredientEntity(),
           IngredientEntity(),
@@ -45,13 +49,14 @@ class RecipeEntity extends Equatable {
   @override
   List<Object?> get props => [
         id,
-        imagens,
-        newImages,
+        userId,
         name,
         description,
-        preparationTime,
-        portions,
+        images,
+        newImages,
         baseIngredients,
         baseSteps,
+        portions,
+        preparationTime,
       ];
 }

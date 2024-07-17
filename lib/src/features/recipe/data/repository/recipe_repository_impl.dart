@@ -10,11 +10,20 @@ class RecipeRepositoryImpl implements RecipeRepository {
   RecipeRepositoryImpl(
     this._recipeRemoteDatasource,
   );
+
   @override
-  Future<Result<RecipeEntity, CustomException>> saveRecipe(
+  Future<Result<RecipeEntity, CustomException>> createRecipe(
     RecipeEntity entity,
   ) {
-    // TODO: implement saveRecipe
+    //1 - chamar o datasource para criar a receita
+    //2 - chamar o datasource para adicionar as imagens na receita
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Result<RecipeEntity, CustomException>> updateRecipe(
+      RecipeEntity recipeEntity) {
+    // TODO: implement updateRecipe
     throw UnimplementedError();
   }
 }

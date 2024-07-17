@@ -19,7 +19,7 @@ class ImagesFormWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FormField<List<dynamic>>(
-      initialValue: List.from(recipeEntity.imagens ?? []),
+      initialValue: List.from(recipeEntity.images ?? []),
       validator: (imagens) {
         if (imagens == null || imagens.isEmpty) {
           return 'Insira ao menos uma imagem';

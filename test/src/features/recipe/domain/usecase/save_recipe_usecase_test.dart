@@ -19,7 +19,7 @@ void main() {
     useCase = SaveRecipeUseCase(recipeRepository);
   });
 
-  final recipeMedia = RecipeEntity(
+  final saveRecipe = RecipeEntity(
     name: 'Bolo de morango',
     baseIngredients: [
       IngredientEntity(
@@ -33,7 +33,30 @@ void main() {
     ],
     description: 'Bolo gostoso',
     portions: '2 pessoas',
-    imagens: const [],
+    images: const [],
+    newImages: const [],
+  );
+
+  const execption = CustomException(
+    messageError: 'Failed to save recipe',
+  );
+
+  final updateRecipe = RecipeEntity(
+    id: 'abahsvahvahvahva',
+    name: 'Bolo de morango',
+    baseIngredients: [
+      IngredientEntity(
+        name: '2kg de Açucar',
+      ),
+    ],
+    baseSteps: [
+      StepRecipeEntity(
+        description: 'Misture',
+      ),
+    ],
+    description: 'Bolo gostoso',
+    portions: '2 pessoas',
+    images: const [],
     newImages: const [],
   );
 
@@ -41,38 +64,66 @@ void main() {
     'SaveRecipeUseCase',
     () {
       test(
-        'should save a sent recipe',
+        'should create a sent recipe',
         () async {
           when(
-            () => recipeRepository.saveRecipe(recipeMedia),
+            () => recipeRepository.createRecipe(saveRecipe),
           ).thenAnswer(
-            (_) async => Result.success(recipeMedia),
+            (_) async => Result.success(saveRecipe),
           );
-          final result = await useCase.call(recipeMedia);
+          final result = await useCase.call(saveRecipe);
 
           expect(result.isSuccess(), true);
-          expect(result.getOrNull(), recipeMedia);
-          verify(() => recipeRepository.saveRecipe(recipeMedia)).called(1);
+          expect(result.getOrNull(), saveRecipe);
+          verify(() => recipeRepository.createRecipe(saveRecipe)).called(1);
         },
       );
 
       test(
-        'should return an error when saveRecipe fails',
+        'should return an error when createRecipe fails',
         () async {
-          const execption = CustomException(
-            messageError: 'Failed to save recipe',
-          );
-
           when(
-            () => recipeRepository.saveRecipe(recipeMedia),
+            () => recipeRepository.createRecipe(saveRecipe),
           ).thenAnswer(
             (_) async => const Result.failure(execption),
           );
-          final result = await useCase.call(recipeMedia);
+          final result = await useCase.call(saveRecipe);
           expect(result.isSuccess(), false);
           expect(result.isError(), true);
           expect(result.exceptionOrNull(), execption);
-          verify(() => recipeRepository.saveRecipe(recipeMedia)).called(1);
+          verify(() => recipeRepository.createRecipe(saveRecipe)).called(1);
+        },
+      );
+
+      test(
+        'should update a sent recipe',
+        () async {
+          when(
+            () => recipeRepository.updateRecipe(updateRecipe),
+          ).thenAnswer(
+            (_) async => Result.success(updateRecipe),
+          );
+          final result = await useCase.call(updateRecipe);
+
+          expect(result.isSuccess(), true);
+          expect(result.getOrNull(), updateRecipe);
+          verify(() => recipeRepository.updateRecipe(updateRecipe)).called(1);
+        },
+      );
+
+      test(
+        'should return an error when updateRecipe fails',
+        () async {
+          when(
+            () => recipeRepository.updateRecipe(updateRecipe),
+          ).thenAnswer(
+            (_) async => const Result.failure(execption),
+          );
+          final result = await useCase.call(updateRecipe);
+          expect(result.isSuccess(), false);
+          expect(result.isError(), true);
+          expect(result.exceptionOrNull(), execption);
+          verify(() => recipeRepository.updateRecipe(updateRecipe)).called(1);
         },
       );
     },

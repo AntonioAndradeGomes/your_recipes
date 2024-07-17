@@ -12,6 +12,9 @@ class SaveRecipeUseCase implements Usecase<RecipeEntity, RecipeEntity> {
   @override
   Future<Result<RecipeEntity, CustomException>> call(RecipeEntity input) {
     //fazer validações de null aqui e de formato da entidade -> regras de négocio.
-    return _recipeRepository.saveRecipe(input);
+    if (input.id == null) {
+      return _recipeRepository.createRecipe(input);
+    }
+    return _recipeRepository.updateRecipe(input);
   }
 }
