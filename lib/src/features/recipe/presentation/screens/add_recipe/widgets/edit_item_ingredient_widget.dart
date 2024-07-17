@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:your_recipes/src/common/entities/ingredient_entity.dart';
+import 'package:your_recipes/src/features/recipe/domain/entities/ingredient_entity.dart';
 import 'package:your_recipes/src/common/utils/extensions.dart';
 import 'package:your_recipes/src/common/widgets/custom_icon_button.dart';
 

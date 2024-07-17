@@ -1,5 +1,4 @@
-import 'package:your_recipes/src/common/entities/ingredient_section_entity.dart';
-
+import 'package:your_recipes/src/features/recipe/domain/entities/ingredient_section_entity.dart';
 import 'ingredient_model.dart';
 
 // ignore: must_be_immutable
@@ -37,4 +36,18 @@ class IngredientSectionModel extends IngredientSectionEntity {
       'type': 1,
     };
   }
+
+  factory IngredientSectionModel.fromEntity(IngredientSectionEntity entity) =>
+      IngredientSectionModel(
+        name: entity.name ?? '',
+        ingredients: entity.ingredients == null
+            ? []
+            : entity.ingredients!
+                .map(
+                  (e) => IngredientModel(
+                    name: e.name ?? '',
+                  ),
+                )
+                .toList(),
+      );
 }

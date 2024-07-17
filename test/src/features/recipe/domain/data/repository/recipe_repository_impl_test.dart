@@ -12,6 +12,8 @@ void main() {
 
   setUp(() {
     recipeRemoteDatasource = MockRecipeRemoteDatasource();
-    recipeRepositoryImpl = RecipeRepositoryImpl(recipeRemoteDatasource);
+    recipeRepositoryImpl = RecipeRepositoryImpl(
+      datasource: recipeRemoteDatasource,
+    );
   });
 }

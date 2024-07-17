@@ -17,6 +17,11 @@ import 'package:your_recipes/src/features/image/data/datasource/local/images_dat
 import 'package:your_recipes/src/features/image/data/repository/images_repository_imp.dart';
 import 'package:your_recipes/src/features/image/domain/repository/images_repository.dart';
 import 'package:your_recipes/src/features/image/domain/usecases/get_image.dart';
+import 'package:your_recipes/src/features/recipe/data/datasources/recipe_remote_datasource.dart';
+import 'package:your_recipes/src/features/recipe/data/repository/recipe_repository_impl.dart';
+import 'package:your_recipes/src/features/recipe/domain/repository/recipe_repository.dart';
+import 'package:your_recipes/src/features/recipe/domain/usecase/save_recipe_usecase.dart';
+import 'package:your_recipes/src/features/recipe/presentation/screens/add_recipe/bloc/save_recipe_bloc.dart';
 
 final getIt = GetIt.instance;
 
@@ -92,4 +97,31 @@ Future<void> initializeDependencies() async {
     ),
   );
   ////////////////////////////////////////////////
+
+  //cadastro de receitas
+  getIt.registerFactory(
+    () => SaveRecipeBloc(
+      saveRecipeUseCase: getIt<SaveRecipeUseCase>(),
+    ),
+  );
+
+  getIt.registerLazySingleton(
+    () => SaveRecipeUseCase(
+      repository: getIt<RecipeRepository>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<RecipeRepository>(
+    () => RecipeRepositoryImpl(
+      datasource: getIt<RecipeRemoteDatasource>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<RecipeRemoteDatasource>(
+    () => RecipeRemoteDatasourceImpl(
+      auth: getIt<FirebaseAuth>(),
+      firestore: getIt<FirebaseFirestore>(),
+      storage: getIt<FirebaseStorage>(),
+    ),
+  );
 }

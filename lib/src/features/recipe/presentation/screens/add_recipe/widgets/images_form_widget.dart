@@ -6,7 +6,7 @@ import 'package:your_recipes/src/common/dialogs/image_source_dialog.dart';
 import 'package:your_recipes/src/features/image/domain/entities/image_source_type.dart';
 import 'package:your_recipes/src/common/widgets/food_carrousel_slider_widget.dart';
 import 'package:your_recipes/src/features/image/domain/usecases/get_image.dart';
-import 'package:your_recipes/src/common/entities/recipe_entity.dart';
+import 'package:your_recipes/src/features/recipe/domain/entities/recipe_entity.dart';
 import 'package:your_recipes/src/features/recipe/presentation/screens/add_recipe/widgets/show_image_carrousel_widget.dart';
 
 class ImagesFormWidget extends StatelessWidget {

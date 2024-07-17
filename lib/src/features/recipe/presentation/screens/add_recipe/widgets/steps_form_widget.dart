@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:your_recipes/src/common/entities/step_recipe_entity.dart';
+import 'package:your_recipes/src/features/recipe/domain/entities/step_recipe_entity.dart';
 import 'package:your_recipes/src/common/utils/extensions.dart';
 import 'package:your_recipes/src/common/widgets/custom_icon_button.dart';
 import 'package:your_recipes/src/features/recipe/presentation/screens/add_recipe/widgets/edit_item_step_widget.dart';

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:your_recipes/src/common/entities/ingredient_entity.dart';
-import 'package:your_recipes/src/common/entities/step_recipe_entity.dart';
+import 'package:your_recipes/src/features/recipe/domain/entities/ingredient_entity.dart';
+import 'package:your_recipes/src/features/recipe/domain/entities/step_recipe_entity.dart';
 
 // ignore: must_be_immutable
 class RecipeEntity extends Equatable {
@@ -14,6 +14,8 @@ class RecipeEntity extends Equatable {
   List<StepRecipeEntity>? baseSteps;
   String? portions;
   String? preparationTime;
+  DateTime? createdAt;
+  DateTime? updatedAt;
 
   RecipeEntity({
     this.id,
@@ -26,6 +28,8 @@ class RecipeEntity extends Equatable {
     this.baseSteps,
     this.portions,
     this.preparationTime,
+    this.createdAt,
+    this.updatedAt,
   });
 
   RecipeEntity.empty()
@@ -44,7 +48,9 @@ class RecipeEntity extends Equatable {
         ],
         portions = null,
         newImages = [],
-        preparationTime = null;
+        preparationTime = null,
+        createdAt = DateTime.now(),
+        updatedAt = DateTime.now();
 
   @override
   List<Object?> get props => [
@@ -58,5 +64,7 @@ class RecipeEntity extends Equatable {
         baseSteps,
         portions,
         preparationTime,
+        createdAt,
+        updatedAt,
       ];
 }

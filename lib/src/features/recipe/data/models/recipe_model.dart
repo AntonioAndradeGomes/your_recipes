@@ -1,4 +1,7 @@
-import 'package:your_recipes/src/common/entities/recipe_entity.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:your_recipes/src/features/recipe/domain/entities/ingredient_entity.dart';
+import 'package:your_recipes/src/features/recipe/domain/entities/ingredient_section_entity.dart';
+import 'package:your_recipes/src/features/recipe/domain/entities/recipe_entity.dart';
 import 'package:your_recipes/src/features/recipe/data/models/ingredient_model.dart';
 import 'package:your_recipes/src/features/recipe/data/models/ingredient_section_model.dart';
 import 'package:your_recipes/src/features/recipe/data/models/step_recipe_model.dart';
@@ -16,6 +19,8 @@ class RecipeModel extends RecipeEntity {
     required List<StepRecipeModel> baseSteps,
     required String portions,
     required String preparationTime,
+    required DateTime? createdAt,
+    required DateTime? updatedAt,
   }) : super(
           id: id,
           userId: userId,
@@ -27,6 +32,8 @@ class RecipeModel extends RecipeEntity {
           baseSteps: baseSteps,
           portions: portions,
           preparationTime: preparationTime,
+          createdAt: createdAt,
+          updatedAt: updatedAt,
         );
 
   factory RecipeModel.fromJson(Map<String, dynamic> json) => RecipeModel(
@@ -53,6 +60,45 @@ class RecipeModel extends RecipeEntity {
                 .toList(),
         portions: json['portions'] ?? '',
         preparationTime: json['preparationTime'] ?? '',
+        createdAt: json['createdAt'] == null
+            ? null
+            : (json['createdAt'] as Timestamp).toDate(),
+        updatedAt: json['updatedAt'] == null
+            ? null
+            : (json['updatedAt'] as Timestamp).toDate(),
+      );
+
+  factory RecipeModel.fromEntity(RecipeEntity entity) => RecipeModel(
+        id: entity.id,
+        userId: entity.userId,
+        name: entity.name ?? '',
+        description: entity.description,
+        images: entity.images ?? [],
+        newImages: entity.newImages ?? [],
+        baseIngredients: entity.baseIngredients != null
+            ? entity.baseIngredients!
+                .map(
+                  (e) {
+                    if (e is IngredientEntity) {
+                      return IngredientModel.fromEntity(e);
+                    } else if (e is IngredientSectionEntity) {
+                      return IngredientSectionModel.fromEntity(e);
+                    }
+                    return null;
+                  },
+                )
+                .where((e) => e != null)
+                .toList()
+            : [],
+        baseSteps: entity.baseSteps != null
+            ? entity.baseSteps!
+                .map((e) => StepRecipeModel.fromEntity(e))
+                .toList()
+            : [],
+        portions: entity.portions ?? '',
+        preparationTime: entity.preparationTime ?? '',
+        createdAt: entity.createdAt,
+        updatedAt: entity.updatedAt,
       );
 
   Map<String, dynamic> toMap() {
@@ -70,7 +116,7 @@ class RecipeModel extends RecipeEntity {
                 if (e is IngredientSectionModel) {
                   return e.toMap();
                 }
-                return [];
+                return {};
               },
             ).toList(),
       'baseSteps': baseSteps == null
@@ -78,6 +124,8 @@ class RecipeModel extends RecipeEntity {
           : baseSteps!.map((e) => (e as StepRecipeModel).toMap()).toList(),
       'portions': portions,
       'preparationTime': preparationTime,
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
     };
   }
 }

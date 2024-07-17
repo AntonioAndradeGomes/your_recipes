@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:result_dart/result_dart.dart';
-import 'package:your_recipes/src/common/entities/ingredient_entity.dart';
-import 'package:your_recipes/src/common/entities/recipe_entity.dart';
-import 'package:your_recipes/src/common/entities/step_recipe_entity.dart';
+import 'package:your_recipes/src/features/recipe/domain/entities/ingredient_entity.dart';
+import 'package:your_recipes/src/features/recipe/domain/entities/recipe_entity.dart';
+import 'package:your_recipes/src/features/recipe/domain/entities/step_recipe_entity.dart';
 import 'package:your_recipes/src/common/error/custom_exception.dart';
 import 'package:your_recipes/src/features/recipe/domain/repository/recipe_repository.dart';
 import 'package:your_recipes/src/features/recipe/domain/usecase/save_recipe_usecase.dart';
@@ -16,7 +16,7 @@ void main() {
 
   setUp(() {
     recipeRepository = MockRecipeRepository();
-    useCase = SaveRecipeUseCase(recipeRepository);
+    useCase = SaveRecipeUseCase(repository: recipeRepository);
   });
 
   final saveRecipe = RecipeEntity(

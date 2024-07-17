@@ -1,4 +1,4 @@
-import 'package:your_recipes/src/common/entities/step_recipe_entity.dart';
+import 'package:your_recipes/src/features/recipe/domain/entities/step_recipe_entity.dart';
 
 // ignore: must_be_immutable
 class StepRecipeModel extends StepRecipeEntity {
@@ -11,6 +11,11 @@ class StepRecipeModel extends StepRecipeEntity {
   factory StepRecipeModel.fromJson(Map<String, dynamic> json) =>
       StepRecipeModel(
         description: json['description'] ?? '',
+      );
+
+  factory StepRecipeModel.fromEntity(StepRecipeEntity entity) =>
+      StepRecipeModel(
+        description: entity.description ?? '',
       );
 
   Map<String, dynamic> toMap() {

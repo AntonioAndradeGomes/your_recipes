@@ -1,4 +1,4 @@
-import 'package:your_recipes/src/common/entities/ingredient_entity.dart';
+import 'package:your_recipes/src/features/recipe/domain/entities/ingredient_entity.dart';
 
 // ignore: must_be_immutable
 class IngredientModel extends IngredientEntity {
@@ -11,6 +11,11 @@ class IngredientModel extends IngredientEntity {
   factory IngredientModel.fromJson(Map<String, dynamic> json) =>
       IngredientModel(
         name: json['name'] ?? '',
+      );
+
+  factory IngredientModel.fromEntity(IngredientEntity entity) =>
+      IngredientModel(
+        name: entity.name ?? '',
       );
 
   Map<String, dynamic> toMap() {

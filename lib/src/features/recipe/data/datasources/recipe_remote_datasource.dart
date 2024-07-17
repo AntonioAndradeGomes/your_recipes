@@ -1,16 +1,20 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:result_dart/result_dart.dart';
 import 'package:uuid/uuid.dart';
 import 'package:your_recipes/src/common/error/custom_exception.dart';
 import 'package:your_recipes/src/features/recipe/data/models/recipe_model.dart';
 
 abstract class RecipeRemoteDatasource {
-  Future<RecipeModel> createRecipe(RecipeModel recipeModel);
-  Future<RecipeModel> updateRecipe(RecipeModel recipeModel);
+  Future<Result<RecipeModel, CustomException>> createRecipe(
+    RecipeModel recipeModel,
+  );
+  Future<Result<RecipeModel, CustomException>> updateRecipe(
+    RecipeModel recipeModel,
+  );
   Future<List<String>> uploadImages(
     List<dynamic> newImages,
     List<String> oldImages,
@@ -18,24 +22,24 @@ abstract class RecipeRemoteDatasource {
   );
 }
 
-class RecipeRemoteDatasourceImpl extends RecipeRemoteDatasource {
+class RecipeRemoteDatasourceImpl implements RecipeRemoteDatasource {
   final FirebaseAuth _firebaseAuth;
   final FirebaseFirestore _firebaseFirestore;
   final FirebaseStorage _firebaseStorage;
 
-  RecipeRemoteDatasourceImpl(
-    this._firebaseAuth,
-    this._firebaseFirestore,
-    this._firebaseStorage,
-  );
+  RecipeRemoteDatasourceImpl({
+    required FirebaseAuth auth,
+    required FirebaseFirestore firestore,
+    required FirebaseStorage storage,
+  })  : _firebaseAuth = auth,
+        _firebaseFirestore = firestore,
+        _firebaseStorage = storage;
 
   CollectionReference get _recipeColletion => _firebaseFirestore.collection(
         'recipes',
       );
 
-  @override
-  Future<RecipeModel> createRecipe(RecipeModel recipeModel) async {
-    log('buscado o user autenticado');
+  Future<User?> _getAuthenticatedUser() async {
     final user = _firebaseAuth.currentUser;
     if (user == null) {
       throw const CustomException(
@@ -43,37 +47,76 @@ class RecipeRemoteDatasourceImpl extends RecipeRemoteDatasource {
         customMessage: 'Usuário não autenticado',
       );
     }
-    recipeModel.userId = user.uid;
-    log('criando receita: $recipeModel');
-    final doc = await _recipeColletion.add(recipeModel.toMap());
-    recipeModel.id = doc.id;
-    return recipeModel;
-    /*log('processo de adicionar imagens na receita $recipeModel');
-    final updateImages = await _uploadImages(
-      recipeModel.newImages ?? [],
-      recipeModel.images ?? [],
-      recipeModel.id!,
-    );
-    recipeModel.images = updateImages;
-    return recipeModel;*/
+    return user;
   }
 
   @override
-  Future<RecipeModel> updateRecipe(RecipeModel recipeModel) async {
-    log('Atualizado dados da receita: $recipeModel');
-    _recipeColletion.doc(recipeModel.id!).update(recipeModel.toMap());
-    log('processo de adicionar imagens na receita $recipeModel');
-    final updateImages = await _uploadImages(
-      recipeModel.newImages ?? [],
-      recipeModel.images ?? [],
-      recipeModel.id!,
-    );
-    recipeModel.images = updateImages;
-    return recipeModel;
+  Future<Result<RecipeModel, CustomException>> createRecipe(
+    RecipeModel recipeModel,
+  ) async {
+    // Obtém o usuário autenticado
+    log('Buscando o ID do usuário autenticado');
+    final user = await _getAuthenticatedUser();
+    if (user == null) {
+      return const Result.failure(
+        CustomException(
+          messageError: 'unauthenticated user',
+          customMessage: 'Usuário não autenticado',
+        ),
+      );
+    }
+    // Atribui o ID do usuário à receita
+    recipeModel.userId = user.uid;
+    log('Tentando cadastrar a receita: $recipeModel');
+    try {
+      // Adiciona a receita ao Firestore
+      final doc = await _recipeColletion.add(recipeModel.toMap());
+      recipeModel.id = doc.id;
+      return Result.success(recipeModel);
+    } catch (e, s) {
+      log(
+        'Erro no cadastro de receita: ${e.toString()}',
+        error: e,
+        stackTrace: s,
+        time: DateTime.now(),
+      );
+      return Result.failure(
+        CustomException(
+          messageError: e.toString(),
+          customMessage: 'Erro no cadastro da receita',
+        ),
+      );
+    }
   }
 
-  Future<List<String>> _uploadImages(
-    List<dynamic> newImages,
+  @override
+  Future<Result<RecipeModel, CustomException>> updateRecipe(
+    RecipeModel recipeModel,
+  ) async {
+    log('Tentando atualizar dados da receita: $recipeModel');
+    try {
+      recipeModel.updatedAt = DateTime.now();
+      await _recipeColletion.doc(recipeModel.id).update(recipeModel.toMap());
+      return Result.success(recipeModel);
+    } catch (e, s) {
+      log(
+        'Erro na atualização de receita: ${e.toString()}',
+        error: e,
+        stackTrace: s,
+        time: DateTime.now(),
+      );
+      return Result.failure(
+        CustomException(
+          messageError: e.toString(),
+          customMessage: 'Erro na atualização da receita',
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<List<String>> uploadImages(
+    List newImages,
     List<String> oldImages,
     String recipeId,
   ) async {
@@ -125,12 +168,5 @@ class RecipeRemoteDatasourceImpl extends RecipeRemoteDatasource {
     );
 
     return updateImages;
-  }
-
-  @override
-  Future<List<String>> uploadImages(
-      List newImages, List<String> oldImages, String recipeId) {
-    // TODO: implement uploadImages
-    throw UnimplementedError();
   }
 }
