@@ -6,6 +6,7 @@ import 'package:your_recipes/src/features/recipe/data/datasources/recipe_remote_
 import 'package:your_recipes/src/features/recipe/data/models/recipe_model.dart';
 import 'package:your_recipes/src/features/recipe/data/repository/recipe_repository_impl.dart';
 import 'package:your_recipes/src/features/recipe/domain/entities/recipe_entity.dart';
+import 'package:your_recipes/src/features/recipe/domain/repository/recipe_repository.dart';
 
 class MockRecipeRemoteDatasource extends Mock
     implements RecipeRemoteDatasource {}
@@ -13,7 +14,7 @@ class MockRecipeRemoteDatasource extends Mock
 class FakeRecipeModel extends Fake implements RecipeModel {}
 
 void main() {
-  late RecipeRepositoryImpl recipeRepositoryImpl;
+  late RecipeRepository recipeRepositoryImpl;
   late RecipeRemoteDatasource recipeRemoteDatasource;
 
   setUpAll(() {
