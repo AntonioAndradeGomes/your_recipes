@@ -34,7 +34,7 @@ class BasePage extends StatelessWidget {
             onPressedAddRecipe: () {
               context.pushNamed(
                 RoutesLocation.editRecipe,
-                extra: const RecipeEntity(),
+                extra: RecipeEntity.empty(),
               );
             },
           ),

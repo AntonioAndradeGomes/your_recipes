@@ -7,7 +7,7 @@ import 'package:your_recipes/src/features/image/domain/entities/image_source_typ
 import 'package:your_recipes/src/common/widgets/food_carrousel_slider_widget.dart';
 import 'package:your_recipes/src/features/image/domain/usecases/get_image.dart';
 import 'package:your_recipes/src/features/recipe/domain/entities/recipe_entity.dart';
-import 'package:your_recipes/src/features/recipe/presentation/screens/widgets/show_image_carrousel_widget.dart';
+import 'package:your_recipes/src/features/recipe/presentation/screens/add_recipe/widgets/show_image_carrousel_widget.dart';
 
 class ImagesFormWidget extends StatelessWidget {
   final RecipeEntity recipeEntity;
@@ -19,14 +19,15 @@ class ImagesFormWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FormField<List<dynamic>>(
-      initialValue: List.from(recipeEntity.imagens ?? []),
+      initialValue: List.from(recipeEntity.images ?? []),
       validator: (imagens) {
         if (imagens == null || imagens.isEmpty) {
           return 'Insira ao menos uma imagem';
         }
         return null;
       },
-      onSaved: (list) {},
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      onSaved: (list) => recipeEntity.newImages = list,
       builder: (state) {
         void onImageAdd(File? file) {
           if (file != null) {

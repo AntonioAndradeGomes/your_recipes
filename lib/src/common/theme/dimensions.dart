@@ -7,6 +7,7 @@ abstract class Dimensions {
   static final paddingAllLarge = const EdgeInsets.all(20).w;
   static final paddingAllMedium = const EdgeInsets.all(10).w;
   static final paddingAllSmall = const EdgeInsets.all(8).w;
+
   static final bottomNavBarMargin = const EdgeInsets.symmetric(
     horizontal: 50,
     vertical: 20,

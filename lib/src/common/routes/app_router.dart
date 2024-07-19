@@ -8,7 +8,7 @@ import 'package:your_recipes/src/features/auth/presentation/screens/login_screen
 import 'package:your_recipes/src/features/base/presentation/screens/base_page.dart';
 import 'package:your_recipes/src/features/home/presentation/screens/home_page.dart';
 import 'package:your_recipes/src/features/recipe/domain/entities/recipe_entity.dart';
-import 'package:your_recipes/src/features/recipe/presentation/screens/edit_recipe_page.dart';
+import 'package:your_recipes/src/features/recipe/presentation/screens/add_recipe/edit_recipe_page.dart';
 import 'package:your_recipes/src/features/splash/presentation/screens/splash_screen.dart';
 import 'package:your_recipes/src/features/user_profile/presentation/screens/profile_screen.dart';
 

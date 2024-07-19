@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -16,6 +17,11 @@ import 'package:your_recipes/src/features/image/data/datasource/local/images_dat
 import 'package:your_recipes/src/features/image/data/repository/images_repository_imp.dart';
 import 'package:your_recipes/src/features/image/domain/repository/images_repository.dart';
 import 'package:your_recipes/src/features/image/domain/usecases/get_image.dart';
+import 'package:your_recipes/src/features/recipe/data/datasources/recipe_remote_datasource.dart';
+import 'package:your_recipes/src/features/recipe/data/repository/recipe_repository_impl.dart';
+import 'package:your_recipes/src/features/recipe/domain/repository/recipe_repository.dart';
+import 'package:your_recipes/src/features/recipe/domain/usecase/save_recipe_usecase.dart';
+import 'package:your_recipes/src/features/recipe/presentation/screens/add_recipe/bloc/save_recipe_bloc.dart';
 
 final getIt = GetIt.instance;
 
@@ -28,6 +34,10 @@ Future<void> initializeDependencies() async {
     FirebaseFirestore.instance,
   );
   getIt.registerSingleton(GoogleSignIn.standard());
+
+  getIt.registerSingleton(
+    FirebaseStorage.instance,
+  );
 
   //instances of image
   getIt.registerSingleton(ImagePicker());
@@ -87,4 +97,31 @@ Future<void> initializeDependencies() async {
     ),
   );
   ////////////////////////////////////////////////
+
+  //cadastro de receitas
+  getIt.registerFactory(
+    () => SaveRecipeBloc(
+      saveRecipeUseCase: getIt<SaveRecipeUseCase>(),
+    ),
+  );
+
+  getIt.registerLazySingleton(
+    () => SaveRecipeUseCase(
+      repository: getIt<RecipeRepository>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<RecipeRepository>(
+    () => RecipeRepositoryImpl(
+      datasource: getIt<RecipeRemoteDatasource>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<RecipeRemoteDatasource>(
+    () => RecipeRemoteDatasourceImpl(
+      auth: getIt<FirebaseAuth>(),
+      firestore: getIt<FirebaseFirestore>(),
+      storage: getIt<FirebaseStorage>(),
+    ),
+  );
 }
