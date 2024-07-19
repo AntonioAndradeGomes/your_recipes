@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:your_recipes/src/common/error/custom_exception.dart';
+import 'package:your_recipes/src/common/usecases/usecase.dart';
 import 'package:your_recipes/src/features/auth/domain/entities/user_entity.dart';
 import 'package:your_recipes/src/features/auth/domain/usecases/login_with_google.dart';
 
@@ -25,7 +26,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     Emitter<LoginState> emit,
   ) async {
     emit(LoginLoading());
-    final res = await _loginWithGoogleUseCase.call();
+    final res = await _loginWithGoogleUseCase.call(NoParams());
     res.fold(
       (success) => emit(LoginSuccess(success)),
       (error) => emit(LoginError(error)),

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:your_recipes/src/features/auth/domain/entities/user_entity.dart';
 import 'package:your_recipes/src/features/auth/domain/usecases/auth_state_changes.dart';
 part 'app_user_state.dart';
 
@@ -21,11 +20,11 @@ class AppUserCubit extends Cubit<AppUserState> {
   void _init() {
     emit(AppUserLoading());
     _authSubscription = _authStateChanges.call().listen(
-      (event) {
-        if (event == null) {
+      (auth) {
+        if (!auth) {
           emit(AppUserUnauthenticated());
         } else {
-          emit(AppUserAuthenticated(event));
+          emit(AppUserAuthenticated());
         }
       },
     );

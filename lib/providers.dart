@@ -67,27 +67,27 @@ Future<void> initializeDependencies() async {
 
   getIt.registerLazySingleton<AuthDatasource>(
     () => AuthFirebaseDatasource(
-      getIt<FirebaseAuth>(),
-      getIt<FirebaseFirestore>(),
-      getIt<GoogleSignIn>(),
+      auth: getIt<FirebaseAuth>(),
+      firestore: getIt<FirebaseFirestore>(),
+      googleSignIn: getIt<GoogleSignIn>(),
     ),
   );
 
   getIt.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(
-      getIt<AuthDatasource>(),
+      datasource: getIt<AuthDatasource>(),
     ),
   );
 
   getIt.registerLazySingleton<LoginWithGoogle>(
     () => LoginWithGoogle(
-      getIt<AuthRepository>(),
+      repository: getIt<AuthRepository>(),
     ),
   );
 
   getIt.registerLazySingleton<AuthStateChanges>(
     () => AuthStateChanges(
-      getIt<AuthRepository>(),
+      authRepository: getIt<AuthRepository>(),
     ),
   );
 

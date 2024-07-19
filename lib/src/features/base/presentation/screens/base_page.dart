@@ -29,7 +29,7 @@ class BasePage extends StatelessWidget {
               (element) => element.path == location,
             ),
             onChanged: (value) {
-              context.go(value.path, extra: state.userEntity);
+              context.go(value.path);
             },
             onPressedAddRecipe: () {
               context.pushNamed(

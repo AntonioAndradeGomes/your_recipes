@@ -1,11 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:your_recipes/src/features/auth/data/models/user_model.dart';
+import 'package:go_router/go_router.dart';
+import 'package:your_recipes/src/common/routes/routes.dart';
 
 class ProfileScreen extends StatelessWidget {
-  final UserModel userModel;
   const ProfileScreen({
     super.key,
-    required this.userModel,
   });
 
   @override
@@ -14,13 +14,21 @@ class ProfileScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Seu Perfil'),
       ),
-      body: Center(
-        child: FilledButton(
-          child: const Text(
-            'Sair',
+      body: Column(
+        children: [
+          Center(
+            child: FilledButton(
+              child: const Text(
+                'Sair',
+              ),
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+                // ignore: use_build_context_synchronously
+                context.go(RoutesLocation.splash);
+              },
+            ),
           ),
-          onPressed: () {},
-        ),
+        ],
       ),
     );
   }

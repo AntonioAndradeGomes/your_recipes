@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:your_recipes/src/common/routes/routes_location.dart';
-import 'package:your_recipes/src/features/auth/data/models/user_model.dart';
 import 'package:your_recipes/src/features/auth/presentation/bloc/app_user/app_user_cubit.dart';
 import 'package:your_recipes/src/features/auth/presentation/screens/login_screen.dart';
 import 'package:your_recipes/src/features/base/presentation/screens/base_page.dart';
@@ -32,12 +31,35 @@ class AppRouter {
         builder: (context, state) {
           return const SplashScreen();
         },
+        redirect: (context, state) {
+          final isLoadingUser = _appUserCubit.state is AppUserLoading;
+          final authenticatedUser = _appUserCubit.state is AppUserAuthenticated;
+          final unauthenticatedUser =
+              _appUserCubit.state is AppUserUnauthenticated;
+          if (isLoadingUser) {
+            return null;
+          }
+          if (authenticatedUser) {
+            return RoutesLocation.base;
+          }
+          if (unauthenticatedUser) {
+            return RoutesLocation.login;
+          }
+          return null;
+        },
       ),
       GoRoute(
         path: RoutesLocation.login,
         name: RoutesLocation.login,
         builder: (context, state) {
           return const LoginScreen();
+        },
+        redirect: (context, state) {
+          final authenticatedUser = _appUserCubit.state is AppUserAuthenticated;
+          if (authenticatedUser) {
+            return RoutesLocation.base;
+          }
+          return null;
         },
       ),
       GoRoute(
@@ -102,36 +124,14 @@ class AppRouter {
             name: RoutesLocation.profile,
             parentNavigatorKey: shellNavigatorKey,
             builder: (context, state) {
-              final userModel = state.extra as UserModel;
-              return ProfileScreen(
-                userModel: userModel,
-              );
+              return const ProfileScreen();
             },
           ),
         ],
       )
     ],
     redirect: (context, state) {
-      final isLoadingUser = _appUserCubit.state is AppUserLoading;
-      final authenticatedUser = _appUserCubit.state is AppUserAuthenticated;
-      final unauthenticatedUser = _appUserCubit.state is AppUserUnauthenticated;
-      final isSplashPage = state.fullPath == RoutesLocation.splash;
-      final isLoginPage = state.fullPath == RoutesLocation.login;
-      log('path: ${state.fullPath}');
-      if (isSplashPage && isLoadingUser) {
-        return null;
-      }
-      if (isSplashPage && authenticatedUser) {
-        return RoutesLocation.base;
-      }
-      if (isSplashPage && unauthenticatedUser) {
-        return RoutesLocation.login;
-      }
-
-      if (isLoginPage && authenticatedUser) {
-        return RoutesLocation.base;
-      }
-
+      log('rota: ${state.fullPath}');
       return null;
     },
     refreshListenable: GoRouterRefreshStream(

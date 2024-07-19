@@ -11,9 +11,9 @@ import 'package:your_recipes/src/features/auth/domain/repository/auth_repository
 class AuthRepositoryImpl extends AuthRepository {
   final AuthDatasource _authDatasource;
 
-  AuthRepositoryImpl(
-    this._authDatasource,
-  );
+  AuthRepositoryImpl({
+    required AuthDatasource datasource,
+  }) : _authDatasource = datasource;
 
   @override
   Future<Result<UserEntity, CustomException>> loginWithGoogle() async {
@@ -57,7 +57,7 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Stream<UserEntity?> authStateChanges() {
+  Stream<bool> authStateChanges() {
     return _authDatasource.authStateChanges();
   }
 }

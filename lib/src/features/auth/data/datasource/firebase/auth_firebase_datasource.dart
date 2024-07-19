@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:your_recipes/src/features/auth/data/datasource/auth_datasource.dart';
@@ -12,11 +13,13 @@ class AuthFirebaseDatasource extends AuthDatasource {
   final FirebaseFirestore _firebaseFirestore;
   final GoogleSignIn _googleSignIn;
 
-  AuthFirebaseDatasource(
-    this._firebaseAuth,
-    this._firebaseFirestore,
-    this._googleSignIn,
-  );
+  AuthFirebaseDatasource({
+    required FirebaseAuth auth,
+    required FirebaseFirestore firestore,
+    required GoogleSignIn googleSignIn,
+  })  : _firebaseAuth = auth,
+        _firebaseFirestore = firestore,
+        _googleSignIn = googleSignIn;
 
   CollectionReference get _usersCollection => _firebaseFirestore.collection(
         'users',
@@ -45,21 +48,21 @@ class AuthFirebaseDatasource extends AuthDatasource {
         json.addAll({'id': userDoc.id});
         return UserModel.fromJson(json);
       }
-      return _createUser(result.user!);
+      return _createUser(result.user!, 'Google');
     } catch (e) {
       log(e.toString());
       rethrow;
     }
   }
 
-  Future<UserModel> _createUser(User user) async {
+  Future<UserModel> _createUser(User user, String provide) async {
     final userModel = UserModel(
       id: user.uid,
       email: user.email!,
       name: user.displayName!,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
-      provide: 'Google',
+      provide: provide,
       photoUrl: user.photoURL,
     );
     await _usersCollection.doc(user.uid).set(userModel.toMap());
@@ -67,21 +70,7 @@ class AuthFirebaseDatasource extends AuthDatasource {
   }
 
   @override
-  Stream<UserModel?> authStateChanges() {
-    return _firebaseAuth.authStateChanges().asyncExpand(
-      (user) {
-        if (user == null) {
-          return Stream.value(null);
-        }
-        return _usersCollection.doc(user.uid).snapshots().map((doc) {
-          if (doc.exists) {
-            final json = doc.data() as Map<String, dynamic>;
-            json.addAll({'id': doc.id});
-            return UserModel.fromJson(json);
-          }
-          return null;
-        });
-      },
-    );
+  Stream<bool> authStateChanges() {
+    return _firebaseAuth.authStateChanges().map((event) => event != null);
   }
 }
