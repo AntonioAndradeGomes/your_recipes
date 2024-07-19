@@ -54,21 +54,22 @@ class RecipeRemoteDatasourceImpl implements RecipeRemoteDatasource {
   Future<Result<RecipeModel, CustomException>> createRecipe(
     RecipeModel recipeModel,
   ) async {
-    // Obtém o usuário autenticado
-    log('Buscando o ID do usuário autenticado');
-    final user = await _getAuthenticatedUser();
-    if (user == null) {
-      return const Result.failure(
-        CustomException(
-          messageError: 'unauthenticated user',
-          customMessage: 'Usuário não autenticado',
-        ),
-      );
-    }
-    // Atribui o ID do usuário à receita
-    recipeModel.userId = user.uid;
-    log('Tentando cadastrar a receita: $recipeModel');
     try {
+      // Obtém o usuário autenticado
+      log('Buscando o ID do usuário autenticado');
+      final user = await _getAuthenticatedUser();
+      if (user == null) {
+        return const Result.failure(
+          CustomException(
+            messageError: 'unauthenticated user',
+            customMessage: 'Usuário não autenticado',
+          ),
+        );
+      }
+      // Atribui o ID do usuário à receita
+      recipeModel.userId = user.uid;
+      log('Tentando cadastrar a receita: $recipeModel');
+
       // Adiciona a receita ao Firestore
       final doc = await _recipeColletion.add(recipeModel.toMap());
       recipeModel.id = doc.id;
@@ -93,8 +94,16 @@ class RecipeRemoteDatasourceImpl implements RecipeRemoteDatasource {
   Future<Result<RecipeModel, CustomException>> updateRecipe(
     RecipeModel recipeModel,
   ) async {
-    log('Tentando atualizar dados da receita: $recipeModel');
     try {
+      log('Tentando atualizar dados da receita: $recipeModel');
+      if (recipeModel.id == null || recipeModel.id!.isEmpty) {
+        return const Result.failure(
+          CustomException(
+            messageError: 'Recipe ID is null or empty',
+            customMessage: 'Identificador da receita está nulo ou vazio',
+          ),
+        );
+      }
       recipeModel.updatedAt = DateTime.now();
       await _recipeColletion.doc(recipeModel.id).update(recipeModel.toMap());
       return Result.success(recipeModel);
@@ -150,6 +159,7 @@ class RecipeRemoteDatasourceImpl implements RecipeRemoteDatasource {
           final ref = _firebaseStorage.refFromURL(image);
           await ref.delete();
         } catch (e, s) {
+          //ignorar
           log(
             'Falha ao deletar a imagem: $image',
             error: e,
