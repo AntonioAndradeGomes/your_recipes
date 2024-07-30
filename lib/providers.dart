@@ -22,20 +22,28 @@ import 'package:your_recipes/src/features/recipe/data/repository/recipe_reposito
 import 'package:your_recipes/src/features/recipe/domain/repository/recipe_repository.dart';
 import 'package:your_recipes/src/features/recipe/domain/usecase/save_recipe_usecase.dart';
 import 'package:your_recipes/src/features/recipe/presentation/screens/add_recipe/bloc/save_recipe_bloc.dart';
+import 'package:your_recipes/src/features/user_profile/data/datasources/profile_remote_datasource.dart';
+import 'package:your_recipes/src/features/user_profile/data/repository/profile_repository_impl.dart';
+import 'package:your_recipes/src/features/user_profile/domain/usecases/get_user_usecase.dart';
+import 'package:your_recipes/src/features/user_profile/presentation/bloc/profile_bloc.dart';
+
+import 'src/features/user_profile/domain/repository/profile_repository.dart';
 
 final getIt = GetIt.instance;
 
 Future<void> initializeDependencies() async {
   //instances of firebase
-  getIt.registerSingleton(
+  getIt.registerSingleton<FirebaseAuth>(
     FirebaseAuth.instance,
   );
-  getIt.registerSingleton(
+  getIt.registerSingleton<FirebaseFirestore>(
     FirebaseFirestore.instance,
   );
-  getIt.registerSingleton(GoogleSignIn.standard());
+  getIt.registerSingleton<GoogleSignIn>(
+    GoogleSignIn.standard(),
+  );
 
-  getIt.registerSingleton(
+  getIt.registerSingleton<FirebaseStorage>(
     FirebaseStorage.instance,
   );
 
@@ -122,6 +130,36 @@ Future<void> initializeDependencies() async {
       auth: getIt<FirebaseAuth>(),
       firestore: getIt<FirebaseFirestore>(),
       storage: getIt<FirebaseStorage>(),
+    ),
+  );
+
+  //perfil do usuário
+  // Registrar ProfileRemoteDatasourceImp
+  getIt.registerLazySingleton<ProfileRemoteDatasource>(
+    () => ProfileRemoteDatasourceImp(
+      auth: getIt<FirebaseAuth>(),
+      firestore: getIt<FirebaseFirestore>(),
+    ),
+  );
+
+  // Registrar ProfileRepositoryImpl
+  getIt.registerLazySingleton<ProfileRepository>(
+    () => ProfileRepositoryImpl(
+      datasource: getIt<ProfileRemoteDatasource>(),
+    ),
+  );
+
+  // Registrar GetUserUsecase
+  getIt.registerLazySingleton(
+    () => GetUserUsecase(
+      repository: getIt<ProfileRepository>(),
+    ),
+  );
+
+  // Registrar ProfileBloc
+  getIt.registerLazySingleton(
+    () => ProfileBloc(
+      getUserUseCase: getIt<GetUserUsecase>(),
     ),
   );
 }

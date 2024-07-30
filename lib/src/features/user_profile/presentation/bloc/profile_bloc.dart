@@ -1,4 +1,4 @@
-import 'dart:async';
+import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,25 +11,34 @@ part 'profile_state.dart';
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final GetUserUsecase _getUserUsecase;
   ProfileBloc({
-    required GetUserUsecase usecase,
-  })  : _getUserUsecase = usecase,
+    required GetUserUsecase getUserUseCase,
+  })  : _getUserUsecase = getUserUseCase,
         super(ProfileLoadingState()) {
-    //on<GetUserEvent>(_onLoadUser);
+    on<GetUserEvent>(_onLoadUser);
+    add(GetUserEvent());
   }
 
-  /*Future<void> _onLoadUser(
+  Future<void> _onLoadUser(
     GetUserEvent event,
     Emitter<ProfileState> emit,
   ) async {
     emit(ProfileLoadingState());
     final userStream = _getUserUsecase.call();
-    await emit.forEach<UserEntity?>(
-      userStream,
-      onData: (user) {
-        if(user != null){
-          
-        }
+    await emit.forEach<UserEntity?>(userStream, onData: (user) {
+      if (user != null) {
+        return ProfileSuccessState(user);
       }
-    );
-  }*/
+      return ProfileLoadingState();
+    }, onError: (err, st) {
+      log(
+        'error: $err',
+        error: err,
+        stackTrace: st,
+        time: DateTime.now(),
+      );
+      return ProfileErrorState(
+        err.toString(),
+      );
+    });
+  }
 }
