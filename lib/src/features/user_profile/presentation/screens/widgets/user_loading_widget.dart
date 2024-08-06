@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:your_recipes/src/common/theme/dimensions.dart';
 import 'package:your_recipes/src/common/widgets/shimmer_widget.dart';
 
 class UserLoadingWidget extends StatelessWidget {
@@ -6,18 +7,29 @@ class UserLoadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ListTile(
-      contentPadding: EdgeInsets.zero,
-      dense: true,
-      title: ShimmerWidget.rectangular(
-        heigth: 16,
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 20,
       ),
-      /* subtitle: ShimmerWidget.rectangular(
-        heigth: 14,
-      ),*/
-      leading: ShimmerWidget.circular(
-        heigth: 64,
-        width: 64,
+      child: Column(
+        children: [
+          const ShimmerWidget.circular(
+            heigth: 75,
+            width: 75,
+          ),
+          Dimensions.verticalSpaceSmaller,
+          const ShimmerWidget.rectangular(
+            heigth: 14,
+          ),
+          Dimensions.verticalSpaceSmallest,
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 40),
+            child: ShimmerWidget.rectangular(
+              heigth: 10,
+            ),
+          ),
+          Dimensions.verticalSpaceSmallest,
+        ],
       ),
     );
   }

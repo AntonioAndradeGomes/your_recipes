@@ -1,20 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:your_recipes/src/features/auth/data/models/user_model.dart';
 
 abstract class ProfileRemoteDatasource {
   Stream<UserModel?> authenticatedUserStream();
+  Future<void> logout();
 }
 
 class ProfileRemoteDatasourceImp implements ProfileRemoteDatasource {
   final FirebaseAuth _firebaseAuth;
   final FirebaseFirestore _firebaseFirestore;
+  final GoogleSignIn _googleSignIn;
 
   ProfileRemoteDatasourceImp({
     required FirebaseAuth auth,
     required FirebaseFirestore firestore,
+    required GoogleSignIn googleSignIn,
   })  : _firebaseAuth = auth,
-        _firebaseFirestore = firestore;
+        _firebaseFirestore = firestore,
+        _googleSignIn = googleSignIn;
 
   CollectionReference get _usersCollection => _firebaseFirestore.collection(
         'users',
@@ -39,5 +44,11 @@ class ProfileRemoteDatasourceImp implements ProfileRemoteDatasource {
         );
       },
     );
+  }
+
+  @override
+  Future<void> logout() async {
+    await _googleSignIn.signOut();
+    await _firebaseAuth.signOut();
   }
 }

@@ -6,3 +6,5 @@ sealed class ProfileEvent extends Equatable {
 }
 
 class GetUserEvent extends ProfileEvent {}
+
+class LogoutUserEvent extends ProfileEvent {}

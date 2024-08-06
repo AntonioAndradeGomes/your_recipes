@@ -126,6 +126,15 @@ class AppRouter {
             builder: (context, state) {
               return const ProfileScreen();
             },
+            redirect: (context, state) {
+              final unauthenticatedUser =
+                  _appUserCubit.state is AppUserUnauthenticated;
+
+              if (unauthenticatedUser) {
+                return RoutesLocation.splash;
+              }
+              return null;
+            },
           ),
         ],
       )

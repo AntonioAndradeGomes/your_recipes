@@ -25,6 +25,7 @@ import 'package:your_recipes/src/features/recipe/presentation/screens/add_recipe
 import 'package:your_recipes/src/features/user_profile/data/datasources/profile_remote_datasource.dart';
 import 'package:your_recipes/src/features/user_profile/data/repository/profile_repository_impl.dart';
 import 'package:your_recipes/src/features/user_profile/domain/usecases/get_user_usecase.dart';
+import 'package:your_recipes/src/features/user_profile/domain/usecases/logout_user_usecase.dart';
 import 'package:your_recipes/src/features/user_profile/presentation/bloc/profile_bloc.dart';
 
 import 'src/features/user_profile/domain/repository/profile_repository.dart';
@@ -139,6 +140,7 @@ Future<void> initializeDependencies() async {
     () => ProfileRemoteDatasourceImp(
       auth: getIt<FirebaseAuth>(),
       firestore: getIt<FirebaseFirestore>(),
+      googleSignIn: getIt<GoogleSignIn>(),
     ),
   );
 
@@ -146,6 +148,12 @@ Future<void> initializeDependencies() async {
   getIt.registerLazySingleton<ProfileRepository>(
     () => ProfileRepositoryImpl(
       datasource: getIt<ProfileRemoteDatasource>(),
+    ),
+  );
+  //Registrar LogoutUseCase
+  getIt.registerLazySingleton(
+    () => LogoutUserUseCase(
+      repository: getIt<ProfileRepository>(),
     ),
   );
 
@@ -160,6 +168,7 @@ Future<void> initializeDependencies() async {
   getIt.registerLazySingleton(
     () => ProfileBloc(
       getUserUseCase: getIt<GetUserUsecase>(),
+      logoutUserUseCase: getIt<LogoutUserUseCase>(),
     ),
   );
 }

@@ -1,9 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:your_recipes/providers.dart';
-import 'package:your_recipes/src/common/routes/routes.dart';
 import 'package:your_recipes/src/common/theme/dimensions.dart';
 import 'package:your_recipes/src/common/utils/extensions.dart';
 import 'package:your_recipes/src/features/user_profile/presentation/bloc/profile_bloc.dart';
@@ -40,46 +37,63 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   return const SizedBox();
                 }
                 final user = state.userEntity!;
-                return Column(
-                  children: [
-                    UserProfileImageWidget(
-                      size: 80,
-                      name: user.name,
-                      image: user.photoUrl,
-                    ),
-                    Dimensions.verticalSpaceSmaller,
-                    Text(
-                      user.name,
-                      style: textTheme.titleMedium?.copyWith(
-                        color: colors.primary,
-                        fontWeight: FontWeight.bold,
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                  ),
+                  child: Column(
+                    children: [
+                      UserProfileImageWidget(
+                        size: 80,
+                        name: user.name,
+                        image: user.photoUrl,
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      user.email,
-                      style: textTheme.labelLarge,
-                      textAlign: TextAlign.center,
-                    ),
-                    Dimensions.verticalSpaceSmallest,
-                    Row(
-                      children: [],
-                    ),
-                  ],
+                      Dimensions.verticalSpaceSmaller,
+                      Text(
+                        user.name,
+                        style: textTheme.titleMedium?.copyWith(
+                          color: colors.primary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      Text(
+                        user.email,
+                        style: textTheme.labelLarge,
+                        textAlign: TextAlign.center,
+                      ),
+                      Dimensions.verticalSpaceSmallest,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton.filled(
+                            onPressed: () {},
+                            tooltip: 'Editar Perfil',
+                            icon: const Icon(
+                              Icons.edit_rounded,
+                            ),
+                          ),
+                          IconButton.filled(
+                            onPressed: () {},
+                            tooltip: 'Configurações',
+                            icon: const Icon(
+                              Icons.settings,
+                            ),
+                          ),
+                          IconButton.filled(
+                            onPressed: () {
+                              _controller.add(LogoutUserEvent());
+                            },
+                            tooltip: 'Sair',
+                            icon: const Icon(
+                              Icons.logout_rounded,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 );
-              },
-            ),
-          ),
-          UserLoadingWidget(),
-          Center(
-            child: FilledButton(
-              child: const Text(
-                'Sair',
-              ),
-              onPressed: () async {
-                await FirebaseAuth.instance.signOut();
-                // ignore: use_build_context_synchronously
-                context.go(RoutesLocation.splash);
               },
             ),
           ),
