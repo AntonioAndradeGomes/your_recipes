@@ -6,7 +6,6 @@ import 'package:your_recipes/src/common/usecases/usecase.dart';
 import 'package:your_recipes/src/features/auth/domain/entities/user_entity.dart';
 import 'package:your_recipes/src/features/user_profile/domain/usecases/get_user_usecase.dart';
 import 'package:your_recipes/src/features/user_profile/domain/usecases/logout_user_usecase.dart';
-
 part 'profile_event.dart';
 part 'profile_state.dart';
 

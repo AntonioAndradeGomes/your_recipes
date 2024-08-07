@@ -26,7 +26,7 @@ import 'package:your_recipes/src/features/user_profile/data/datasources/profile_
 import 'package:your_recipes/src/features/user_profile/data/repository/profile_repository_impl.dart';
 import 'package:your_recipes/src/features/user_profile/domain/usecases/get_user_usecase.dart';
 import 'package:your_recipes/src/features/user_profile/domain/usecases/logout_user_usecase.dart';
-import 'package:your_recipes/src/features/user_profile/presentation/bloc/profile_bloc.dart';
+import 'package:your_recipes/src/features/user_profile/presentation/bloc/profile/profile_bloc.dart';
 
 import 'src/features/user_profile/domain/repository/profile_repository.dart';
 

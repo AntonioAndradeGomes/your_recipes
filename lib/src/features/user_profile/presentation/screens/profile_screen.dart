@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:your_recipes/providers.dart';
+import 'package:your_recipes/src/common/routes/routes.dart';
 import 'package:your_recipes/src/common/theme/dimensions.dart';
 import 'package:your_recipes/src/common/utils/extensions.dart';
-import 'package:your_recipes/src/features/user_profile/presentation/bloc/profile_bloc.dart';
+import 'package:your_recipes/src/features/user_profile/presentation/bloc/profile/profile_bloc.dart';
 import 'package:your_recipes/src/features/user_profile/presentation/screens/widgets/user_loading_widget.dart';
 import 'package:your_recipes/src/features/user_profile/presentation/screens/widgets/user_profile_image_widget.dart';
 
@@ -67,7 +69,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           IconButton.filled(
-                            onPressed: () {},
+                            onPressed: () {
+                              context.pushNamed(
+                                RoutesLocation.editProfile,
+                                extra: state.userEntity,
+                              );
+                            },
                             tooltip: 'Editar Perfil',
                             icon: const Icon(
                               Icons.edit_rounded,

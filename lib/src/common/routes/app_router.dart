@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:your_recipes/src/common/routes/routes_location.dart';
+import 'package:your_recipes/src/features/auth/domain/entities/user_entity.dart';
 import 'package:your_recipes/src/features/auth/presentation/bloc/app_user/app_user_cubit.dart';
 import 'package:your_recipes/src/features/auth/presentation/screens/login_screen.dart';
 import 'package:your_recipes/src/features/base/presentation/screens/base_page.dart';
@@ -9,6 +10,7 @@ import 'package:your_recipes/src/features/home/presentation/screens/home_page.da
 import 'package:your_recipes/src/features/recipe/domain/entities/recipe_entity.dart';
 import 'package:your_recipes/src/features/recipe/presentation/screens/add_recipe/edit_recipe_page.dart';
 import 'package:your_recipes/src/features/splash/presentation/screens/splash_screen.dart';
+import 'package:your_recipes/src/features/user_profile/presentation/screens/edit_profile_screen.dart';
 import 'package:your_recipes/src/features/user_profile/presentation/screens/profile_screen.dart';
 
 final navigationKey = GlobalKey<NavigatorState>();
@@ -44,6 +46,24 @@ class AppRouter {
           }
           if (unauthenticatedUser) {
             return RoutesLocation.login;
+          }
+          return null;
+        },
+      ),
+      GoRoute(
+        path: RoutesLocation.editProfile,
+        name: RoutesLocation.editProfile,
+        builder: (context, state) {
+          final user = state.extra as UserEntity;
+          return EditProfileScreen(
+            userEntity: user,
+          );
+        },
+        redirect: (context, state) {
+          final unauthenticatedUser =
+              _appUserCubit.state is AppUserUnauthenticated;
+          if (unauthenticatedUser) {
+            return RoutesLocation.splash;
           }
           return null;
         },

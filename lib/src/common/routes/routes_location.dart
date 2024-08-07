@@ -9,4 +9,6 @@ abstract class RoutesLocation {
   static String get profile => '/profile';
 
   static String get editRecipe => '/editRecipe';
+
+  static String get editProfile => '/editProfile';
 }
